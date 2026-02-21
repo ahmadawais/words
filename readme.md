@@ -1,18 +1,20 @@
-# WORDCOUNT
+# Word Counter & Character Counter
 
-Live word, character, and text analysis tool.
+Free online word counter and character counter — live text analysis tool.
 
 → **[words.awais.dev](https://words.awais.dev)**
 
 ## Features
 
-- Word, character, sentence, and paragraph counts
-- Read time and speak time estimates
+- **Word counter** and **character counter** (with/without spaces)
+- **Sentence counter** and **paragraph counter**
+- **Read time** and **speak time** estimates
 - Character breakdown (letters, numbers, punctuation, spaces, emojis, special)
-- Unique words, repeated words, vocabulary density
-- Top words frequency chart
-- Emoji showcase
+- **Unique words**, repeated words, **vocabulary density**
+- **Top words frequency** chart and **keyword density**
+- Emoji showcase and emoji counter
 - URL, email, hashtag, and mention detection
+- **Readability score** and **Hemingway analyzer**
 - Dark / light theme
 
 ## Stack
