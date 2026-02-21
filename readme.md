@@ -4,6 +4,8 @@ Free online word counter and character counter — live text analysis tool.
 
 → **[words.awais.dev](https://words.awais.dev)**
 
+![Word Counter & Character Counter](https://raw.githubusercontent.com/ahmadawais/words/main/.github/cover.png)
+
 ## Features
 
 - **Word counter** and **character counter** (with/without spaces)
