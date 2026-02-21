@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORDCOUNT v1.0.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      border-radius: 0 !important;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    }
+
+    /* ── CSS Variables ── */
+    :root {
+      --bg:       #000000;
+      --surface:  #080808;
+      --border:   #1a1a1a;
+      --dash:     #222222;
+      --accent:   #00FF41;
+      --accent2:  #FFB000;
+      --accent3:  #00FFFF;
+      --accent4:  #C7B8F5;
+      --text:     #C8C8C8;
+      --dim:      #444444;
+      --bright:   #FFFFFF;
+      --red:      #FF3B30;
+      --blue:     #007AFF;
+    }
+    html.light {
+      --bg:       #F0EDE6;
+      --surface:  #F8F5EE;
+      --border:   #C8C0A8;
+      --dash:     #B0A898;
+      --accent:   #1A6B2A;
+      --accent2:  #8B5E00;
+      --accent3:  #006B6B;
+      --accent4:  #5856D6;
+      --text:     #1A1A1A;
+      --dim:      #888888;
+      --bright:   #000000;
+      --red:      #CC2200;
+      --blue:     #0055CC;
+    }
+
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      /* Braille-cell dot grid texture */
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 8px 10px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* ── Dashed Border System (from geometric skill) ── */
+    .dash-top-right {
+      border-top: 1px dashed transparent;
+      border-right: 1px dashed transparent;
+      background-image:
+        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
+        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px);
+      background-position: right top, left top;
+      background-size: 1px 7px, 7px 1px;
+      background-repeat: repeat-y, repeat-x;
+      background-origin: border-box;
+      background-clip: border-box;
+    }
+    .dash-right {
+      border-right: 1px dashed transparent;
+      background-image: repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px);
+      background-repeat: repeat-y;
+      background-position: right;
+      background-size: 1px 7px;
+      background-origin: border-box;
+    }
+    .dash-top {
+      border-top: 1px dashed transparent;
+      background-image: repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
+      background-position: left top;
+      background-size: 7px 1px;
+      background-repeat: repeat-x;
+      background-origin: border-box;
+      background-clip: border-box;
+    }
+    .dash-bottom {
+      border-bottom: 1px dashed transparent;
+      background-image: repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
+      background-repeat: repeat-x;
+      background-position: left bottom;
+      background-size: 7px 1px;
+      background-origin: border-box;
+      background-clip: border-box;
+    }
+    .dash-left {
+      border-left: 1px dashed transparent;
+      background-image: repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px);
+      background-repeat: repeat-y;
+      background-position: left;
+      background-size: 1px 7px;
+      background-origin: border-box;
+    }
+    .dash-y {
+      border-top: 1px dashed transparent;
+      border-bottom: 1px dashed transparent;
+      background-image:
+        repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px),
+        repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
+      background-position: left top, left bottom;
+      background-size: 7px 1px;
+      background-repeat: repeat-x;
+      background-origin: border-box;
+      background-clip: border-box;
+    }
+    .dash-all {
+      border: 1px dashed transparent;
+      background-image:
+        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
+        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
+        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px),
+        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px);
+      background-position: left top, right top, left top, left bottom;
+      background-size: 1px 7px, 1px 7px, 7px 1px, 7px 1px;
+      background-repeat: repeat-y, repeat-y, repeat-x, repeat-x;
+      background-origin: border-box;
+      background-clip: border-box;
+    }
+
+    /* ── Corner Boxes ── */
+    .corner-box {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: var(--bg);
+      border: 1px solid var(--dash);
+      z-index: 99;
+    }
+    .corner-tl { top: 0; left: 0; transform: translate(-50%, -50%); }
+    .corner-tr { top: 0; right: 0; transform: translate(50%, -50%); }
+    .corner-bl { bottom: 0; left: 0; transform: translate(-50%, 50%); }
+    .corner-br { bottom: 0; right: 0; transform: translate(50%, 50%); }
+
+    /* ── Gradient Accent Bar ── */
+    .accent-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.6px;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        #00FF41 0%,
+        #00FF41 20%,
+        #FFB000 40%,
+        #FFB000 45%,
+        #00FFFF 65%,
+        #00FFFF 70%,
+        #C7B8F5 90%,
+        #C7B8F5 100%
+      );
+      z-index: 0;
+      transform: translateX(-0.8px);
+      animation: barReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+    @keyframes barReveal {
+      from { clip-path: inset(100% 0 0 0); }
+      to   { clip-path: inset(0 0 0 0); }
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 8px 10px;
+    }
+    .header-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-box {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-box svg { display: block; }
+    .header-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--bright);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .header-title .comment { color: var(--dim); }
+    .header-title .version { color: var(--dim); font-weight: 400; }
+    .blink-cursor {
+      display: inline-block;
+      width: 8px; height: 13px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .header-words {
+      font-size: 11px;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+    .header-words span { color: var(--accent); font-weight: 700; }
+
+    /* Theme toggle */
+    .theme-toggle-wrap { display: flex; align-items: center; gap: 6px; }
+    .theme-label { font-size: 10px; color: var(--dim); }
+    .toggle-track {
+      width: 44px; height: 22px;
+      background: var(--surface);
+      border: 1px solid var(--dash);
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-thumb {
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--accent);
+      top: 2px; left: 2px;
+      transition: transform 0.2s;
+    }
+    html.light .toggle-thumb { transform: translateX(22px); }
+
+    /* ── Main Container ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .main-wrap {
+      position: relative;
+      border: 1px solid var(--dash);
+      background: var(--surface);
+      width: 100%;
+    }
+
+    /* ── Section Labels ── */
+    .sec-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sec-label::before { content: '//'; color: var(--accent); }
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--dash);
+    }
+
+    /* ── Input Section ── */
+    .input-section { padding: 16px; position: relative; }
+    .prompt-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .prompt-char {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+      padding-top: 10px;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--bright);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 10px 0 0 0;
+      resize: none;
+      min-height: 140px;
+      max-height: 380px;
+      caret-color: var(--accent);
+      width: 100%;
+    }
+    textarea::placeholder { color: var(--dim); }
+    .input-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+    .input-meta-left { display: flex; gap: 12px; }
+    .meta-chip {
+      font-size: 11px;
+      color: var(--dim);
+    }
+    .meta-chip span { color: var(--accent); font-weight: 700; }
+    .meta-read { font-size: 10px; color: var(--dim); }
+
+    .btn-row { display: flex; gap: 8px; }
+    .btn {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border: 1px solid var(--dash);
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-danger:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Primary Stats Grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 480px) {
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-cell {
+      padding: 16px;
+      position: relative;
+    }
+    .stat-cell-label {
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .stat-cell-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--bright);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .stat-cell-value.pop {
+      color: var(--accent);
+      transform: scale(1.08);
+    }
+    .stat-cell-sub {
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 4px;
+    }
+
+    /* ── Time Row ── */
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .time-cell {
+      padding: 14px 16px;
+      position: relative;
+    }
+    .time-cell-key {
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .time-cell-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bright);
+      font-variant-numeric: tabular-nums;
+      transition: color 0.15s;
+    }
+    .time-cell-val.pop { color: var(--accent); }
+    .time-cell-hint { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+    /* ── Char Breakdown ── */
+    .breakdown-section { padding: 16px; }
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 12px;
+    }
+    .breakdown-key {
+      width: 90px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+    .block-bar {
+      flex: 1;
+      color: var(--accent);
+      letter-spacing: -1px;
+      font-size: 11px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .block-bar .filled { color: var(--accent); }
+    .block-bar .empty  { color: var(--border); }
+    .breakdown-pct {
+      width: 36px;
+      text-align: right;
+      color: var(--dim);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .breakdown-count {
+      width: 48px;
+      text-align: right;
+      color: var(--bright);
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Fun Facts Grid ── */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 480px) {
+      .facts-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .fact-cell {
+      padding: 14px 16px;
+      position: relative;
+    }
+    .fact-key {
+      font-size: 10px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .fact-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--bright);
+      font-variant-numeric: tabular-nums;
+      transition: color 0.15s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .fact-val.pop { color: var(--accent2); }
+
+    /* ── Top Words ── */
+    .words-section { padding: 16px; }
+    .word-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 0;
+      font-size: 12px;
+    }
+    .word-key {
+      width: 100px;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .word-bar { flex: 1; color: var(--accent3); font-size: 11px; letter-spacing: -1px; }
+    .word-count { width: 28px; text-align: right; color: var(--dim); font-size: 11px; flex-shrink: 0; }
+
+    /* ── More Counts ── */
+    .more-section { padding: 16px; }
+    .more-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 12px;
+    }
+    .more-key { color: var(--dim); }
+    .more-dots {
+      flex: 1;
+      margin: 0 8px;
+      overflow: hidden;
+      color: var(--border);
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+    .more-val { color: var(--bright); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* ── Emoji Section ── */
+    .emoji-section { padding: 16px; }
+    .emoji-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .emoji-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid var(--dash);
+      background: var(--bg);
+      font-size: 18px;
+    }
+    .emoji-chip-count { font-size: 11px; color: var(--dim); }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-inner {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--bright);
+    }
+    .toast-dot { width: 6px; height: 6px; background: var(--accent); flex-shrink: 0; }
+
+    /* ── Animations ── */
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in { animation: fadeIn 0.4s ease both; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--dash); }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <header class="dash-bottom">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="square">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <div class="header-title">
+            <span class="comment">// </span>WORDCOUNT<span class="version"> v1.0.0</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+            <div class="live-dot"></div>
+            <span style="font-size:10px;color:var(--dim)">LIVE ANALYSIS</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="header-words hidden-sm"><span id="header-words">0</span> WORDS</div>
+        <div class="theme-toggle-wrap">
+          <span class="theme-label">☀</span>
+          <div class="toggle-track" onclick="toggleTheme()" role="button" aria-label="Toggle theme">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="theme-label">☾</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main>
+    <div class="main-wrap fade-in" style="margin-top:20px;position:relative">
+
+      <!-- Gradient accent bar -->
+      <div class="accent-bar"></div>
+
+      <!-- Corner boxes -->
+      <div class="corner-box corner-tl"></div>
+      <div class="corner-box corner-tr"></div>
+      <div class="corner-box corner-bl"></div>
+      <div class="corner-box corner-br"></div>
+
+      <!-- ── INPUT ── -->
+      <div class="input-section dash-bottom">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="sec-label">INPUT</div>
+          <div class="btn-row">
+            <button class="btn" onclick="copyText()">[ COPY ]</button>
+            <button class="btn btn-danger" onclick="clearText()">[ CLR ]</button>
+          </div>
+        </div>
+        <div class="prompt-row">
+          <div class="prompt-char">›</div>
+          <textarea
+            id="textInput"
+            placeholder="paste or type text here…"
+            oninput="analyzeText()"
+            spellcheck="true"
+          ></textarea>
+        </div>
+        <div class="input-meta dash-top" style="padding-top:10px;margin-top:10px">
+          <div class="input-meta-left">
+            <div class="meta-chip"><span id="char-count-inline">0</span> CHARS</div>
+            <div class="meta-chip"><span id="word-count-inline">0</span> WORDS</div>
+          </div>
+          <div class="meta-read" id="reading-time-inline">~0s READ</div>
+        </div>
+      </div>
+
+      <!-- ── PRIMARY STATS ── -->
+      <div class="stats-grid">
+        <div class="stat-cell dash-top-right">
+          <div class="stat-cell-label">Words</div>
+          <div class="stat-cell-value" id="stat-words">0</div>
+          <div class="stat-cell-sub">total tokens</div>
+        </div>
+        <div class="stat-cell dash-top-right">
+          <div class="stat-cell-label">Characters</div>
+          <div class="stat-cell-value" id="stat-chars">0</div>
+          <div class="stat-cell-sub">incl. spaces</div>
+        </div>
+        <div class="stat-cell dash-top-right">
+          <div class="stat-cell-label">Sentences</div>
+          <div class="stat-cell-value" id="stat-sentences">0</div>
+          <div class="stat-cell-sub">by punctuation</div>
+        </div>
+        <div class="stat-cell dash-top">
+          <div class="stat-cell-label">Paragraphs</div>
+          <div class="stat-cell-value" id="stat-paragraphs">0</div>
+          <div class="stat-cell-sub">blank-line sep.</div>
+        </div>
+      </div>
+
+      <!-- ── TIME ESTIMATES ── -->
+      <div class="time-grid">
+        <div class="time-cell dash-top-right">
+          <div class="time-cell-key">Read time</div>
+          <div class="time-cell-val" id="stat-read-time">0s</div>
+          <div class="time-cell-hint">@ 238 wpm</div>
+        </div>
+        <div class="time-cell dash-top-right">
+          <div class="time-cell-key">Speak time</div>
+          <div class="time-cell-val" id="stat-speak-time">0s</div>
+          <div class="time-cell-hint">@ 130 wpm</div>
+        </div>
+        <div class="time-cell dash-top">
+          <div class="time-cell-key">Unique words</div>
+          <div class="time-cell-val" id="stat-unique-words">0</div>
+          <div class="time-cell-hint">distinct tokens</div>
+        </div>
+      </div>
+
+      <!-- ── CHARACTER BREAKDOWN ── -->
+      <div class="breakdown-section dash-top">
+        <div class="sec-label" style="margin-bottom:10px">CHARACTER BREAKDOWN</div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Letters</div>
+          <div class="block-bar" id="bar-letters">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-letters">0%</div>
+          <div class="breakdown-count" id="stat-letters">0</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Numbers</div>
+          <div class="block-bar" id="bar-numbers" style="color:var(--accent2)">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-numbers">0%</div>
+          <div class="breakdown-count" id="stat-numbers">0</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Punctuation</div>
+          <div class="block-bar" id="bar-punctuation" style="color:var(--accent3)">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-punctuation">0%</div>
+          <div class="breakdown-count" id="stat-punctuation">0</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Spaces</div>
+          <div class="block-bar" id="bar-spaces" style="color:var(--accent4)">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-spaces">0%</div>
+          <div class="breakdown-count" id="stat-spaces">0</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Emojis</div>
+          <div class="block-bar" id="bar-emojis" style="color:#FF2D55">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-emojis">0%</div>
+          <div class="breakdown-count" id="stat-emojis">0</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-key">Special</div>
+          <div class="block-bar" id="bar-special" style="color:#5AC8FA">░░░░░░░░░░░░░░░░░░░░</div>
+          <div class="breakdown-pct" id="pct-special">0%</div>
+          <div class="breakdown-count" id="stat-special">0</div>
+        </div>
+      </div>
+
+      <!-- ── EMOJI SHOWCASE ── -->
+      <div class="emoji-section dash-top" id="emoji-section" style="display:none">
+        <div class="sec-label" style="margin-bottom:0">EMOJIS FOUND</div>
+        <div class="emoji-grid" id="emoji-list"></div>
+      </div>
+
+      <!-- ── FUN FACTS ── -->
+      <div class="facts-grid">
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Uppercase</div>
+          <div class="fact-val" id="stat-uppercase">0</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Lowercase</div>
+          <div class="fact-val" id="stat-lowercase">0</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Avg word</div>
+          <div class="fact-val" id="stat-avg-word">0</div>
+        </div>
+        <div class="fact-cell dash-top">
+          <div class="fact-key">Longest</div>
+          <div class="fact-val" id="stat-longest-word" style="font-size:13px">—</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">URLs</div>
+          <div class="fact-val" id="stat-urls">0</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Emails</div>
+          <div class="fact-val" id="stat-emails">0</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Repeated</div>
+          <div class="fact-val" id="stat-repeated">0</div>
+        </div>
+        <div class="fact-cell dash-top">
+          <div class="fact-key">Density</div>
+          <div class="fact-val" id="stat-density">0%</div>
+        </div>
+      </div>
+
+      <!-- ── TOP WORDS ── -->
+      <div class="words-section dash-top" id="top-words-section" style="display:none">
+        <div class="sec-label" style="margin-bottom:10px">TOP WORDS</div>
+        <div id="top-words-list"></div>
+      </div>
+
+      <!-- ── MORE COUNTS ── -->
+      <div class="more-section dash-top">
+        <div class="sec-label" style="margin-bottom:10px">MORE COUNTS</div>
+        <div class="more-row">
+          <span class="more-key">Chars (no spaces)</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-chars-no-space">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Lines</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-lines">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Non-ASCII</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-nonascii">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Hashtags (#)</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-hashtags">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Mentions (@)</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-mentions">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Exclamations (!)</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-exclamations">0</span>
+        </div>
+        <div class="more-row">
+          <span class="more-key">Questions (?)</span>
+          <span class="more-dots">················································</span>
+          <span class="more-val" id="stat-questions">0</span>
+        </div>
+      </div>
+
+    </div><!-- /main-wrap -->
+  </main>
+
+  <!-- ══ TOAST ══ -->
+  <div id="toast">
+    <div class="toast-inner">
+      <div class="toast-dot"></div>
+      <span id="toast-msg">OK</span>
+    </div>
+  </div>
+
+  <script>
+    // ── Theme ──
+    const html = document.documentElement;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    function applyTheme(dark) {
+      html.classList.toggle('dark', dark);
+      html.classList.toggle('light', !dark);
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    function toggleTheme() { applyTheme(!html.classList.contains('dark')); }
+    const saved = localStorage.getItem('theme');
+    if (saved) applyTheme(saved === 'dark');
+    else applyTheme(mq.matches);
+    mq.addEventListener('change', e => { if (!localStorage.getItem('theme')) applyTheme(e.matches); });
+
+    // ── Regexes ──
+    const EMOJI_RE = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;
+    const URL_RE   = /https?:\/\/[^\s]+|www\.[^\s]+/gi;
+    const EMAIL_RE = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
+    const HASH_RE  = /#\w+/g;
+    const MENT_RE  = /@\w+/g;
+
+    // ── Block bar renderer ──
+    const BAR_W = 20;
+    function blockBar(val, total) {
+      if (!total) return '░'.repeat(BAR_W);
+      const f = Math.round(Math.min(1, val / total) * BAR_W);
+      return '█'.repeat(f) + '░'.repeat(BAR_W - f);
+    }
+
+    // ── Time formatter ──
+    function fmtTime(words, wpm) {
+      const s = Math.round((words / wpm) * 60);
+      if (s < 60) return s + 's';
+      const m = Math.floor(s / 60), r = s % 60;
+      return r ? `${m}m ${r}s` : `${m}m`;
+    }
+
+    // ── Animate stat ──
+    function setStat(id, val) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const v = String(val);
+      if (el.textContent === v) return;
+      el.textContent = v;
+      el.classList.remove('pop');
+      void el.offsetWidth;
+      el.classList.add('pop');
+      setTimeout(() => el.classList.remove('pop'), 250);
+    }
+
+    function pct(v, t) { return t ? Math.round((v / t) * 100) + '%' : '0%'; }
+
+    // ── Toast ──
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    function clearText() {
+      document.getElementById('textInput').value = '';
+      analyzeText();
+      toast('CLEARED');
+    }
+    function copyText() {
+      const t = document.getElementById('textInput').value;
+      if (!t) { toast('NOTHING TO COPY'); return; }
+      navigator.clipboard.writeText(t).then(() => toast('COPIED TO CLIPBOARD'));
+    }
+
+    // ── Main analysis ──
+    function analyzeText() {
+      const text = document.getElementById('textInput').value;
+      const total = text.length;
+
+      const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean) : [];
+      const wc = words.length;
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim()).length;
+      const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length;
+      const lines = text.split('\n').length;
+
+      const emojiMatches = [...text.matchAll(EMOJI_RE)];
+      const emojiCount = emojiMatches.length;
+
+      const letters     = (text.match(/[a-zA-Z\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]/g) || []).length;
+      const uppercase   = (text.match(/[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g) || []).length;
+      const lowercase   = (text.match(/[a-z\u00DF-\u00F6\u00F8-\u00FF]/g) || []).length;
+      const numbers     = (text.match(/[0-9]/g) || []).length;
+      const punctuation = (text.match(/[.,!?;:'"()\[\]{}\-–—…\/\\|`~]/g) || []).length;
+      const spaces      = (text.match(/\s/g) || []).length;
+
+      let special = 0;
+      for (const ch of text) {
+        if (!/[a-zA-Z0-9\s.,!?;:'"()\[\]{}\-–—…\/\\|`~\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]/.test(ch) && !EMOJI_RE.test(ch)) special++;
+      }
+      EMOJI_RE.lastIndex = 0;
+
+      const charsNoSpace = total - spaces;
+      const nonAscii    = (text.match(/[^\x00-\x7F]/g) || []).length;
+      const urls        = (text.match(URL_RE)   || []).length;
+      const emails      = (text.match(EMAIL_RE) || []).length;
+      const hashtags    = (text.match(HASH_RE)  || []).length;
+      const mentions    = (text.match(MENT_RE)  || []).length;
+      const excl        = (text.match(/!/g) || []).length;
+      const ques        = (text.match(/\?/g) || []).length;
+
+      const freq = {};
+      words.forEach(w => { const c = w.toLowerCase().replace(/[^a-z0-9']/g,''); if(c) freq[c]=(freq[c]||0)+1; });
+      const unique   = Object.keys(freq).length;
+      const repeated = Object.values(freq).filter(v=>v>1).length;
+      const density  = wc ? Math.round((unique/wc)*100)+'%' : '0%';
+      const avgLen   = wc ? Math.round(words.reduce((s,w)=>s+w.replace(/[^a-zA-Z]/g,'').length,0)/wc) : 0;
+      const longest  = words.reduce((a,b)=>b.length>a.length?b:a,'');
+
+      const readTime  = fmtTime(wc, 238);
+      const speakTime = fmtTime(wc, 130);
+
+      // Set stats
+      setStat('stat-words', wc.toLocaleString());
+      setStat('stat-chars', total.toLocaleString());
+      setStat('stat-sentences', sentences.toLocaleString());
+      setStat('stat-paragraphs', paragraphs.toLocaleString());
+      setStat('stat-read-time', readTime);
+      setStat('stat-speak-time', speakTime);
+      setStat('stat-unique-words', unique.toLocaleString());
+      setStat('stat-letters', letters.toLocaleString());
+      setStat('stat-numbers', numbers.toLocaleString());
+      setStat('stat-punctuation', punctuation.toLocaleString());
+      setStat('stat-spaces', spaces.toLocaleString());
+      setStat('stat-emojis', emojiCount.toLocaleString());
+      setStat('stat-special', special.toLocaleString());
+      setStat('stat-uppercase', uppercase.toLocaleString());
+      setStat('stat-lowercase', lowercase.toLocaleString());
+      setStat('stat-avg-word', avgLen);
+      setStat('stat-longest-word', longest || '—');
+      setStat('stat-urls', urls.toLocaleString());
+      setStat('stat-emails', emails.toLocaleString());
+      setStat('stat-repeated', repeated.toLocaleString());
+      setStat('stat-density', density);
+      setStat('stat-chars-no-space', charsNoSpace.toLocaleString());
+      setStat('stat-lines', lines.toLocaleString());
+      setStat('stat-nonascii', nonAscii.toLocaleString());
+      setStat('stat-hashtags', hashtags.toLocaleString());
+      setStat('stat-mentions', mentions.toLocaleString());
+      setStat('stat-exclamations', excl.toLocaleString());
+      setStat('stat-questions', ques.toLocaleString());
+
+      // Block bars
+      document.getElementById('bar-letters').textContent     = blockBar(letters, total);
+      document.getElementById('bar-numbers').textContent     = blockBar(numbers, total);
+      document.getElementById('bar-punctuation').textContent = blockBar(punctuation, total);
+      document.getElementById('bar-spaces').textContent      = blockBar(spaces, total);
+      document.getElementById('bar-emojis').textContent      = blockBar(emojiCount, total);
+      document.getElementById('bar-special').textContent     = blockBar(special, total);
+
+      // Percentages
+      document.getElementById('pct-letters').textContent     = pct(letters, total);
+      document.getElementById('pct-numbers').textContent     = pct(numbers, total);
+      document.getElementById('pct-punctuation').textContent = pct(punctuation, total);
+      document.getElementById('pct-spaces').textContent      = pct(spaces, total);
+      document.getElementById('pct-emojis').textContent      = pct(emojiCount, total);
+      document.getElementById('pct-special').textContent     = pct(special, total);
+
+      // Inline
+      document.getElementById('char-count-inline').textContent  = total.toLocaleString();
+      document.getElementById('word-count-inline').textContent  = wc.toLocaleString();
+      document.getElementById('reading-time-inline').textContent = `~${readTime} READ`;
+      document.getElementById('header-words').textContent        = wc.toLocaleString();
+
+      // Emoji showcase
+      const emojiSec = document.getElementById('emoji-section');
+      if (emojiCount > 0) {
+        emojiSec.style.display = 'block';
+        const ef = {};
+        emojiMatches.forEach(m => ef[m[0]] = (ef[m[0]]||0)+1);
+        document.getElementById('emoji-list').innerHTML = Object.entries(ef)
+          .sort((a,b)=>b[1]-a[1])
+          .map(([e,c]) => `<div class="emoji-chip">${e}${c>1?`<span class="emoji-chip-count">×${c}</span>`:''}</div>`)
+          .join('');
+      } else { emojiSec.style.display = 'none'; }
+
+      // Top words
+      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','it','this','that','was','are','be','as','by','from','have','has','had','not','we','you','i','he','she','they','do','did','will','would','could','should','may','might','can','its','our','your','their','my','his','her','been','were','so','if','about','up','out','into','than','then','when','there','what','which','who','how','all','more','also','just','no','get','got','go','one','two','three','any','some','such','each','other','these','those','them','us','me','him','her']);
+      const topWords = Object.entries(freq)
+        .filter(([w]) => !stopWords.has(w) && w.length > 2)
+        .sort((a,b) => b[1]-a[1])
+        .slice(0, 8);
+
+      const twSec = document.getElementById('top-words-section');
+      if (topWords.length > 0) {
+        twSec.style.display = 'block';
+        const max = topWords[0][1];
+        document.getElementById('top-words-list').innerHTML = topWords.map(([w,c]) => {
+          const f = Math.round((c/max)*16);
+          const bar = '█'.repeat(f) + '░'.repeat(16-f);
+          return `<div class="word-row"><span class="word-key">${w}</span><span class="word-bar">${bar}</span><span class="word-count">${c}</span></div>`;
+        }).join('');
+      } else { twSec.style.display = 'none'; }
+
+      // Auto-resize textarea
+      const ta = document.getElementById('textInput');
+      ta.style.height = 'auto';
+      ta.style.height = Math.min(380, Math.max(140, ta.scrollHeight)) + 'px';
+    }
+
+    analyzeText();
+    document.getElementById('textInput').focus();
+  </script>
+</body>
+</html>
