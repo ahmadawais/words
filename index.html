@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WORDCOUNT v1.0.0</title>
+  <title>WORDCOUNT — words.awais.dev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -15,7 +15,6 @@
       font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     }
 
-    /* ── CSS Variables ── */
     :root {
       --bg:       #000000;
       --surface:  #080808;
@@ -30,6 +29,11 @@
       --bright:   #FFFFFF;
       --red:      #FF3B30;
       --blue:     #007AFF;
+      --hw-hard:       rgba(255,176,0,0.18);
+      --hw-very-hard:  rgba(255,59,48,0.18);
+      --hw-adverb:     rgba(199,184,245,0.25);
+      --hw-passive:    rgba(0,255,65,0.15);
+      --hw-complex:    rgba(0,255,255,0.15);
     }
     html.light {
       --bg:       #F0EDE6;
@@ -45,21 +49,24 @@
       --bright:   #000000;
       --red:      #CC2200;
       --blue:     #0055CC;
+      --hw-hard:       rgba(180,120,0,0.15);
+      --hw-very-hard:  rgba(180,0,0,0.12);
+      --hw-adverb:     rgba(88,86,214,0.15);
+      --hw-passive:    rgba(26,107,42,0.15);
+      --hw-complex:    rgba(0,107,107,0.15);
     }
 
-    /* ── Base ── */
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      /* Braille-cell dot grid texture */
       background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
       background-size: 8px 10px;
       transition: background-color 0.2s, color 0.2s;
     }
 
-    /* ── Dashed Border System (from geometric skill) ── */
+    /* ── Dashed Border System ── */
     .dash-top-right {
       border-top: 1px dashed transparent;
       border-right: 1px dashed transparent;
@@ -148,20 +155,14 @@
     /* ── Gradient Accent Bar ── */
     .accent-bar {
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 1.6px;
-      height: 100%;
+      left: 0; top: 0;
+      width: 1.6px; height: 100%;
       background: linear-gradient(
         to bottom,
-        #00FF41 0%,
-        #00FF41 20%,
-        #FFB000 40%,
-        #FFB000 45%,
-        #00FFFF 65%,
-        #00FFFF 70%,
-        #C7B8F5 90%,
-        #C7B8F5 100%
+        #00FF41 0%, #00FF41 20%,
+        #FFB000 40%, #FFB000 45%,
+        #00FFFF 65%, #00FFFF 70%,
+        #C7B8F5 90%, #C7B8F5 100%
       );
       z-index: 0;
       transform: translateX(-0.8px);
@@ -174,398 +175,249 @@
 
     /* ── Header ── */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: sticky; top: 0; z-index: 50;
       background: var(--bg);
       background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
       background-size: 8px 10px;
     }
     .header-inner {
-      max-width: 680px;
-      margin: 0 auto;
+      max-width: 680px; margin: 0 auto;
       padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
     .logo-box {
       width: 28px; height: 28px;
       background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .logo-box svg { display: block; }
     .header-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--bright);
-      letter-spacing: 0.05em;
-      white-space: nowrap;
+      font-size: 13px; font-weight: 700;
+      color: var(--bright); letter-spacing: 0.05em; white-space: nowrap;
     }
     .header-title .comment { color: var(--dim); }
     .header-title .version { color: var(--dim); font-weight: 400; }
-    .blink-cursor {
-      display: inline-block;
-      width: 8px; height: 13px;
-      background: var(--accent);
-      vertical-align: middle;
-      margin-left: 2px;
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     .live-dot {
       width: 6px; height: 6px;
-      background: var(--accent);
-      display: inline-block;
+      background: var(--accent); display: inline-block;
       animation: pulse 2s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    .header-words {
-      font-size: 11px;
-      color: var(--dim);
-      white-space: nowrap;
-    }
+    .header-words { font-size: 11px; color: var(--dim); white-space: nowrap; }
     .header-words span { color: var(--accent); font-weight: 700; }
 
-    /* Theme toggle */
     .theme-toggle-wrap { display: flex; align-items: center; gap: 6px; }
     .theme-label { font-size: 10px; color: var(--dim); }
     .toggle-track {
       width: 44px; height: 22px;
-      background: var(--surface);
-      border: 1px solid var(--dash);
-      position: relative;
-      cursor: pointer;
-      flex-shrink: 0;
+      background: var(--surface); border: 1px solid var(--dash);
+      position: relative; cursor: pointer; flex-shrink: 0;
     }
     .toggle-thumb {
-      position: absolute;
-      width: 16px; height: 16px;
-      background: var(--accent);
-      top: 2px; left: 2px;
-      transition: transform 0.2s;
+      position: absolute; width: 16px; height: 16px;
+      background: var(--accent); top: 2px; left: 2px; transition: transform 0.2s;
     }
     html.light .toggle-thumb { transform: translateX(22px); }
 
-    /* ── Main Container ── */
-    main {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 16px 80px;
-      position: relative;
-      box-sizing: border-box;
-    }
-    .main-wrap {
-      position: relative;
-      border: 1px solid var(--dash);
-      background: var(--surface);
-      width: 100%;
-    }
+    /* ── Main ── */
+    main { max-width: 680px; margin: 0 auto; padding: 0 16px 80px; position: relative; box-sizing: border-box; }
+    .main-wrap { position: relative; border: 1px solid var(--dash); background: var(--surface); width: 100%; }
 
     /* ── Section Labels ── */
     .sec-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--dim);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--dim);
+      display: flex; align-items: center; gap: 6px;
     }
     .sec-label::before { content: '//'; color: var(--accent); }
-    .sec-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--dash);
-    }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--dash); }
 
     /* ── Input Section ── */
     .input-section { padding: 16px; position: relative; }
-    .prompt-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-top: 12px;
-    }
+    .prompt-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; }
     .prompt-char {
-      color: var(--accent);
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.6;
-      padding-top: 10px;
-      flex-shrink: 0;
-      user-select: none;
+      color: var(--accent); font-size: 14px; font-weight: 700;
+      line-height: 1.6; padding-top: 10px; flex-shrink: 0; user-select: none;
     }
     textarea {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--bright);
-      font-size: 14px;
-      line-height: 1.6;
-      padding: 10px 0 0 0;
-      resize: none;
-      min-height: 140px;
-      max-height: 380px;
-      caret-color: var(--accent);
-      width: 100%;
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--bright); font-size: 14px; line-height: 1.6;
+      padding: 10px 0 0 0; resize: none;
+      min-height: 140px; max-height: 380px;
+      caret-color: var(--accent); width: 100%;
     }
     textarea::placeholder { color: var(--dim); }
     .input-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 10px;
-      padding-top: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 10px; padding-top: 10px;
     }
     .input-meta-left { display: flex; gap: 12px; }
-    .meta-chip {
-      font-size: 11px;
-      color: var(--dim);
-    }
+    .meta-chip { font-size: 11px; color: var(--dim); }
     .meta-chip span { color: var(--accent); font-weight: 700; }
     .meta-read { font-size: 10px; color: var(--dim); }
 
     .btn-row { display: flex; gap: 8px; }
     .btn {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 5px 12px;
-      border: 1px solid var(--dash);
-      background: transparent;
-      color: var(--dim);
-      cursor: pointer;
-      transition: all 0.15s;
-      text-transform: uppercase;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 5px 12px; border: 1px solid var(--dash);
+      background: transparent; color: var(--dim);
+      cursor: pointer; transition: all 0.15s; text-transform: uppercase;
     }
     .btn:hover { border-color: var(--accent); color: var(--accent); }
     .btn-danger:hover { border-color: var(--red); color: var(--red); }
+    .btn-active { border-color: var(--accent2) !important; color: var(--accent2) !important; }
+
+    /* ── Hemingway View ── */
+    .hemingway-view {
+      display: none;
+      padding: 10px 0 0 0;
+      font-size: 14px; line-height: 1.6;
+      color: var(--bright);
+      min-height: 140px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .hemingway-view.active { display: block; }
+    .hw-hard    { background: var(--hw-hard); }
+    .hw-very-hard { background: var(--hw-very-hard); }
+    .hw-adverb  { border-bottom: 2px solid var(--accent4); }
+    .hw-passive { border-bottom: 2px solid var(--accent); }
+    .hw-complex { border-bottom: 2px solid var(--accent3); }
+
+    .hw-legend {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      padding: 10px 0 0 0; margin-top: 10px;
+    }
+    .hw-legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .hw-legend-dot {
+      width: 10px; height: 10px; flex-shrink: 0;
+    }
 
     /* ── Primary Stats Grid ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @media (min-width: 480px) {
-      .stats-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    .stat-cell {
-      padding: 16px;
-      position: relative;
-    }
-    .stat-cell-label {
-      font-size: 10px;
-      color: var(--dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 480px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-cell { padding: 16px; position: relative; }
+    .stat-cell-label { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
     .stat-cell-value {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--bright);
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
+      font-size: 32px; font-weight: 700; color: var(--bright);
+      line-height: 1; font-variant-numeric: tabular-nums;
       transition: color 0.15s, transform 0.15s;
     }
-    .stat-cell-value.pop {
-      color: var(--accent);
-      transform: scale(1.08);
-    }
-    .stat-cell-sub {
-      font-size: 10px;
-      color: var(--dim);
-      margin-top: 4px;
-    }
+    .stat-cell-value.pop { color: var(--accent); transform: scale(1.08); }
+    .stat-cell-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
 
-    /* ── Time Row ── */
-    .time-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .time-cell {
-      padding: 14px 16px;
-      position: relative;
-    }
-    .time-cell-key {
-      font-size: 10px;
-      color: var(--dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
+    /* ── Time / Grade Row ── */
+    .time-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 480px) { .time-grid { grid-template-columns: repeat(4, 1fr); } }
+    .time-cell { padding: 14px 16px; position: relative; }
+    .time-cell-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
     .time-cell-val {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--bright);
-      font-variant-numeric: tabular-nums;
-      transition: color 0.15s;
+      font-size: 20px; font-weight: 700; color: var(--bright);
+      font-variant-numeric: tabular-nums; transition: color 0.15s;
     }
     .time-cell-val.pop { color: var(--accent); }
     .time-cell-hint { font-size: 10px; color: var(--dim); margin-top: 2px; }
 
-    /* ── Char Breakdown ── */
+    /* ── Readability Row ── */
+    .readability-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 480px) { .readability-grid { grid-template-columns: repeat(3, 1fr); } }
+    .readability-cell { padding: 14px 16px; position: relative; }
+    .readability-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .readability-val {
+      font-size: 20px; font-weight: 700; color: var(--bright);
+      font-variant-numeric: tabular-nums; transition: color 0.15s;
+    }
+    .readability-val.pop { color: var(--accent2); }
+    .readability-hint { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+    /* ── Character Breakdown ── */
     .breakdown-section { padding: 16px; }
-    .breakdown-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 0;
-      font-size: 12px;
-    }
-    .breakdown-key {
-      width: 90px;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-size: 10px;
-      flex-shrink: 0;
-    }
-    .block-bar {
-      flex: 1;
-      color: var(--accent);
-      letter-spacing: -1px;
-      font-size: 11px;
-      overflow: hidden;
-      white-space: nowrap;
-    }
+    .breakdown-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 12px; }
+    .breakdown-key { width: 90px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; flex-shrink: 0; }
+    .block-bar { flex: 1; color: var(--accent); letter-spacing: -1px; font-size: 11px; overflow: hidden; white-space: nowrap; }
     .block-bar .filled { color: var(--accent); }
     .block-bar .empty  { color: var(--border); }
-    .breakdown-pct {
-      width: 36px;
-      text-align: right;
-      color: var(--dim);
-      font-size: 11px;
-      flex-shrink: 0;
-    }
-    .breakdown-count {
-      width: 48px;
-      text-align: right;
-      color: var(--bright);
-      font-size: 11px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
+    .breakdown-pct { width: 36px; text-align: right; color: var(--dim); font-size: 11px; flex-shrink: 0; }
+    .breakdown-count { width: 48px; text-align: right; color: var(--bright); font-size: 11px; font-weight: 700; flex-shrink: 0; }
 
     /* ── Fun Facts Grid ── */
-    .facts-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @media (min-width: 480px) {
-      .facts-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    .fact-cell {
-      padding: 14px 16px;
-      position: relative;
-    }
-    .fact-key {
-      font-size: 10px;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
-    }
+    .facts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 480px) { .facts-grid { grid-template-columns: repeat(4, 1fr); } }
+    .fact-cell { padding: 14px 16px; position: relative; }
+    .fact-key { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
     .fact-val {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--bright);
-      font-variant-numeric: tabular-nums;
-      transition: color 0.15s;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 18px; font-weight: 700; color: var(--bright);
+      font-variant-numeric: tabular-nums; transition: color 0.15s;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .fact-val.pop { color: var(--accent2); }
 
     /* ── Top Words ── */
     .words-section { padding: 16px; }
-    .word-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 5px 0;
-      font-size: 12px;
-    }
-    .word-key {
-      width: 100px;
-      color: var(--text);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
+    .word-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12px; }
+    .word-key { width: 100px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 0; }
     .word-bar { flex: 1; color: var(--accent3); font-size: 11px; letter-spacing: -1px; }
     .word-count { width: 28px; text-align: right; color: var(--dim); font-size: 11px; flex-shrink: 0; }
+    .word-density { width: 36px; text-align: right; color: var(--accent2); font-size: 11px; flex-shrink: 0; }
 
     /* ── More Counts ── */
     .more-section { padding: 16px; }
-    .more-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 12px;
-    }
+    .more-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; font-size: 12px; }
     .more-key { color: var(--dim); }
-    .more-dots {
-      flex: 1;
-      margin: 0 8px;
-      overflow: hidden;
-      color: var(--border);
-      letter-spacing: 2px;
-      white-space: nowrap;
-    }
+    .more-dots { flex: 1; margin: 0 8px; overflow: hidden; color: var(--border); letter-spacing: 2px; white-space: nowrap; }
     .more-val { color: var(--bright); font-weight: 700; font-variant-numeric: tabular-nums; }
 
     /* ── Emoji Section ── */
     .emoji-section { padding: 16px; }
     .emoji-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .emoji-chip {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      border: 1px solid var(--dash);
-      background: var(--bg);
-      font-size: 18px;
-    }
+    .emoji-chip { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--dash); background: var(--bg); font-size: 18px; }
     .emoji-chip-count { font-size: 11px; color: var(--dim); }
+
+    /* ── About Section ── */
+    .about-section { padding: 24px 16px; }
+    .about-title {
+      font-size: 13px; font-weight: 700; color: var(--bright);
+      letter-spacing: 0.05em; margin-bottom: 12px;
+    }
+    .about-body { font-size: 12px; color: var(--dim); line-height: 1.8; }
+    .about-body p { margin-bottom: 10px; }
+    .about-body p:last-child { margin-bottom: 0; }
+    .about-body strong { color: var(--text); font-weight: 700; }
+    .about-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    @media (min-width: 480px) { .about-feature-grid { grid-template-columns: repeat(3, 1fr); } }
+    .about-feature {
+      padding: 8px 10px;
+      border: 1px solid var(--dash);
+      font-size: 10px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .about-feature::before { content: '→ '; color: var(--accent); }
 
     /* ── Toast ── */
     #toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
+      position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(12px);
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
+      z-index: 999; opacity: 0; pointer-events: none;
       transition: opacity 0.2s, transform 0.2s;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast-inner {
-      background: var(--surface);
-      border: 1px solid var(--accent);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--bright);
+      background: var(--surface); border: 1px solid var(--accent);
+      padding: 10px 20px; display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--bright);
     }
     .toast-dot { width: 6px; height: 6px; background: var(--accent); flex-shrink: 0; }
 
@@ -604,7 +456,7 @@
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:16px">
-        <div class="header-words hidden-sm"><span id="header-words">0</span> WORDS</div>
+        <div class="header-words"><span id="header-words">0</span> WORDS</div>
         <div class="theme-toggle-wrap">
           <span class="theme-label">☀</span>
           <div class="toggle-track" onclick="toggleTheme()" role="button" aria-label="Toggle theme">
@@ -620,10 +472,7 @@
   <main>
     <div class="main-wrap fade-in" style="margin-top:20px;position:relative">
 
-      <!-- Gradient accent bar -->
       <div class="accent-bar"></div>
-
-      <!-- Corner boxes -->
       <div class="corner-box corner-tl"></div>
       <div class="corner-box corner-tr"></div>
       <div class="corner-box corner-bl"></div>
@@ -634,19 +483,50 @@
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div class="sec-label">INPUT</div>
           <div class="btn-row">
+            <button class="btn" id="btn-hemingway" onclick="toggleHemingway()">[ HEMINGWAY ]</button>
             <button class="btn" onclick="copyText()">[ COPY ]</button>
             <button class="btn btn-danger" onclick="clearText()">[ CLR ]</button>
           </div>
         </div>
         <div class="prompt-row">
           <div class="prompt-char">›</div>
-          <textarea
-            id="textInput"
-            placeholder="paste or type text here…"
-            oninput="analyzeText()"
-            spellcheck="true"
-          ></textarea>
+          <div style="flex:1;position:relative">
+            <textarea
+              id="textInput"
+              placeholder="paste or type text here…"
+              oninput="analyzeText()"
+              spellcheck="true"
+            ></textarea>
+            <div class="hemingway-view" id="hemingway-view"></div>
+          </div>
         </div>
+
+        <!-- Hemingway Legend -->
+        <div id="hw-legend" style="display:none" class="dash-top" style="padding-top:10px;margin-top:10px">
+          <div class="hw-legend">
+            <div class="hw-legend-item">
+              <div class="hw-legend-dot" style="background:var(--hw-very-hard);border:1px solid var(--red)"></div>
+              Very hard sentence
+            </div>
+            <div class="hw-legend-item">
+              <div class="hw-legend-dot" style="background:var(--hw-hard);border:1px solid var(--accent2)"></div>
+              Hard sentence
+            </div>
+            <div class="hw-legend-item">
+              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent4);width:16px;height:10px"></div>
+              Adverb
+            </div>
+            <div class="hw-legend-item">
+              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent);width:16px;height:10px"></div>
+              Passive voice
+            </div>
+            <div class="hw-legend-item">
+              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent3);width:16px;height:10px"></div>
+              Complex phrase
+            </div>
+          </div>
+        </div>
+
         <div class="input-meta dash-top" style="padding-top:10px;margin-top:10px">
           <div class="input-meta-left">
             <div class="meta-chip"><span id="char-count-inline">0</span> CHARS</div>
@@ -680,7 +560,7 @@
         </div>
       </div>
 
-      <!-- ── TIME ESTIMATES ── -->
+      <!-- ── TIME + UNIQUE ── -->
       <div class="time-grid">
         <div class="time-cell dash-top-right">
           <div class="time-cell-key">Read time</div>
@@ -692,10 +572,34 @@
           <div class="time-cell-val" id="stat-speak-time">0s</div>
           <div class="time-cell-hint">@ 130 wpm</div>
         </div>
-        <div class="time-cell dash-top">
+        <div class="time-cell dash-top-right">
           <div class="time-cell-key">Unique words</div>
           <div class="time-cell-val" id="stat-unique-words">0</div>
           <div class="time-cell-hint">distinct tokens</div>
+        </div>
+        <div class="time-cell dash-top">
+          <div class="time-cell-key">Syllables</div>
+          <div class="time-cell-val" id="stat-syllables">0</div>
+          <div class="time-cell-hint">total count</div>
+        </div>
+      </div>
+
+      <!-- ── READABILITY ── -->
+      <div class="readability-grid">
+        <div class="readability-cell dash-top-right">
+          <div class="readability-key">Grade Level</div>
+          <div class="readability-val" id="stat-grade">—</div>
+          <div class="readability-hint" id="stat-grade-label">Flesch-Kincaid</div>
+        </div>
+        <div class="readability-cell dash-top-right">
+          <div class="readability-key">Reading Ease</div>
+          <div class="readability-val" id="stat-ease">—</div>
+          <div class="readability-hint" id="stat-ease-label">Flesch score</div>
+        </div>
+        <div class="readability-cell dash-top">
+          <div class="readability-key">Hemingway</div>
+          <div class="readability-val" id="stat-hw-hard">0</div>
+          <div class="readability-hint" id="stat-hw-hint">hard sentences</div>
         </div>
       </div>
 
@@ -773,18 +677,34 @@
           <div class="fact-val" id="stat-emails">0</div>
         </div>
         <div class="fact-cell dash-top-right">
+          <div class="fact-key">Adverbs</div>
+          <div class="fact-val" id="stat-adverbs">0</div>
+        </div>
+        <div class="fact-cell dash-top">
+          <div class="fact-key">Passive</div>
+          <div class="fact-val" id="stat-passive">0</div>
+        </div>
+        <div class="fact-cell dash-top-right">
           <div class="fact-key">Repeated</div>
           <div class="fact-val" id="stat-repeated">0</div>
         </div>
-        <div class="fact-cell dash-top">
+        <div class="fact-cell dash-top-right">
           <div class="fact-key">Density</div>
           <div class="fact-val" id="stat-density">0%</div>
+        </div>
+        <div class="fact-cell dash-top-right">
+          <div class="fact-key">Complex</div>
+          <div class="fact-val" id="stat-complex">0</div>
+        </div>
+        <div class="fact-cell dash-top">
+          <div class="fact-key">Avg sent.</div>
+          <div class="fact-val" id="stat-avg-sent">0</div>
         </div>
       </div>
 
       <!-- ── TOP WORDS ── -->
       <div class="words-section dash-top" id="top-words-section" style="display:none">
-        <div class="sec-label" style="margin-bottom:10px">TOP WORDS</div>
+        <div class="sec-label" style="margin-bottom:10px">TOP KEYWORDS + DENSITY</div>
         <div id="top-words-list"></div>
       </div>
 
@@ -828,6 +748,40 @@
         </div>
       </div>
 
+      <!-- ── ABOUT ── -->
+      <div class="about-section dash-top">
+        <div class="sec-label" style="margin-bottom:16px">WHAT IS WORDS BY AWAIS</div>
+        <div class="about-body">
+          <p><strong>Words by Awais</strong> is a free, instant, browser-based word counter and text analysis tool — no sign-up, no server, no tracking. Everything runs locally in your browser.</p>
+          <p>Paste or type any text — an essay, email, tweet, article, script, or code comment — and get a full breakdown in real time. It counts words, characters, sentences, paragraphs, reading time, speaking time, and much more.</p>
+          <p>The built-in <strong>Hemingway Analyzer</strong> highlights hard-to-read sentences, passive voice, adverbs, and complex phrases so you can write cleaner, clearer prose — just like the Hemingway editor.</p>
+          <p>The <strong>Flesch-Kincaid grade level</strong> and <strong>reading ease score</strong> tell you how accessible your writing is. The <strong>keyword density</strong> panel shows your top words and how often they appear — useful for SEO and avoiding repetition.</p>
+        </div>
+        <div class="about-feature-grid">
+          <div class="about-feature">Word count</div>
+          <div class="about-feature">Char count</div>
+          <div class="about-feature">Read time</div>
+          <div class="about-feature">Speak time</div>
+          <div class="about-feature">Grade level</div>
+          <div class="about-feature">Reading ease</div>
+          <div class="about-feature">Hemingway mode</div>
+          <div class="about-feature">Passive voice</div>
+          <div class="about-feature">Adverb count</div>
+          <div class="about-feature">Complex phrases</div>
+          <div class="about-feature">Keyword density</div>
+          <div class="about-feature">Emoji analysis</div>
+          <div class="about-feature">Syllable count</div>
+          <div class="about-feature">Sentence avg</div>
+          <div class="about-feature">URL detection</div>
+          <div class="about-feature">Hashtag count</div>
+          <div class="about-feature">Dark / light mode</div>
+          <div class="about-feature">No sign-up needed</div>
+        </div>
+        <div class="about-body" style="margin-top:12px">
+          <p>Built by <strong>Ahmad Awais</strong> — open-source developer, Google Developer Expert, and recipient of the GitHub Stars gold award. <a href="https://awais.dev" style="color:var(--accent);text-decoration:none">awais.dev</a></p>
+        </div>
+      </div>
+
     </div><!-- /main-wrap -->
   </main>
 
@@ -860,6 +814,187 @@
     const EMAIL_RE = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
     const HASH_RE  = /#\w+/g;
     const MENT_RE  = /@\w+/g;
+
+    // ── Syllable counter ──
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (!word) return 0;
+      if (word.length <= 3) return 1;
+      word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+      word = word.replace(/^y/, '');
+      const m = word.match(/[aeiouy]{1,2}/g);
+      return m ? m.length : 1;
+    }
+
+    function totalSyllables(words) {
+      return words.reduce((s, w) => s + countSyllables(w), 0);
+    }
+
+    // ── Flesch-Kincaid ──
+    function fleschKincaidGrade(words, sentences, syllables) {
+      if (!words || !sentences) return null;
+      return 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
+    }
+
+    function fleschReadingEase(words, sentences, syllables) {
+      if (!words || !sentences) return null;
+      return 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+    }
+
+    function gradeLabel(grade) {
+      if (grade === null) return '—';
+      if (grade < 1)  return 'Kindergarten';
+      if (grade < 6)  return 'Elementary';
+      if (grade < 9)  return 'Middle School';
+      if (grade < 13) return 'High School';
+      if (grade < 17) return 'College';
+      return 'Graduate';
+    }
+
+    function easeLabel(ease) {
+      if (ease === null) return '—';
+      if (ease >= 90) return 'Very Easy';
+      if (ease >= 80) return 'Easy';
+      if (ease >= 70) return 'Fairly Easy';
+      if (ease >= 60) return 'Standard';
+      if (ease >= 50) return 'Fairly Difficult';
+      if (ease >= 30) return 'Difficult';
+      return 'Very Difficult';
+    }
+
+    // ── Adverb detection ──
+    const NOT_ADVERBS = new Set(['only','early','family','likely','lonely','lovely','friendly','ugly','holy','jolly','silly','belly','bully','ally','rally','tally','jelly','smelly','daily','weekly','monthly','yearly','erly','erly','erly']);
+    function findAdverbs(words) {
+      return words.filter(w => {
+        const lw = w.toLowerCase().replace(/[^a-z]/g,'');
+        return lw.endsWith('ly') && lw.length > 4 && !NOT_ADVERBS.has(lw);
+      });
+    }
+
+    // ── Passive voice detection ──
+    const PASSIVE_RE = /\b(am|is|are|was|were|be|been|being)\s+(\w+ly\s+)?(\w+ed|built|bought|brought|caught|dealt|felt|found|got|had|heard|held|kept|known|left|lost|made|meant|met|paid|put|read|said|seen|sent|shown|shut|sold|sent|set|spent|stood|taken|taught|told|thought|understood|won|written)\b/gi;
+    function countPassive(text) {
+      const m = text.match(PASSIVE_RE);
+      return m ? m.length : 0;
+    }
+
+    // ── Complex phrases ──
+    const COMPLEX_PHRASES = [
+      ['a number of','many'],['at the present time','now'],['due to the fact that','because'],
+      ['in order to','to'],['in the event that','if'],['it is important to note','note'],
+      ['it should be noted','note'],['on a daily basis','daily'],['prior to','before'],
+      ['subsequent to','after'],['with regard to','about'],['in spite of the fact that','although'],
+      ['for the purpose of','to'],['in the near future','soon'],['at this point in time','now'],
+      ['in close proximity','near'],['in the majority of cases','usually'],['make a decision','decide'],
+      ['take into consideration','consider'],['in the process of','while'],['a large number of','many'],
+      ['at all times','always'],['in many cases','often'],['in some cases','sometimes'],
+      ['it is possible that','perhaps'],['the question as to whether','whether'],
+    ];
+    function countComplexPhrases(text) {
+      const lower = text.toLowerCase();
+      return COMPLEX_PHRASES.reduce((n, [phrase]) => {
+        let idx = 0, count = 0;
+        while ((idx = lower.indexOf(phrase, idx)) !== -1) { count++; idx += phrase.length; }
+        return n + count;
+      }, 0);
+    }
+
+    // ── Sentence difficulty (per-sentence FK approximation) ──
+    function sentenceDifficulty(sentence) {
+      const words = sentence.trim().split(/\s+/).filter(Boolean);
+      if (!words.length) return 0;
+      const syls = totalSyllables(words);
+      const avgSyl = syls / words.length;
+      const grade = 0.39 * words.length + 11.8 * avgSyl - 15.59;
+      if (grade >= 14 || words.length > 35) return 2; // very hard
+      if (grade >= 10 || words.length > 20) return 1; // hard
+      return 0;
+    }
+
+    // ── Hemingway renderer ──
+    function renderHemingway(text) {
+      if (!text.trim()) return '';
+
+      // Split into sentences preserving delimiters
+      const parts = text.split(/([.!?]+\s*|\n+)/);
+      let result = '';
+      let buffer = '';
+
+      const flushBuffer = () => {
+        if (!buffer.trim()) { result += escHtml(buffer); buffer = ''; return; }
+        const diff = sentenceDifficulty(buffer);
+        let cls = diff === 2 ? 'hw-very-hard' : diff === 1 ? 'hw-hard' : '';
+        const inner = highlightInline(buffer);
+        if (cls) result += `<span class="${cls}">${inner}</span>`;
+        else result += inner;
+        buffer = '';
+      };
+
+      for (const part of parts) {
+        if (/^[.!?]+\s*$/.test(part) || /^\n+$/.test(part)) {
+          buffer += part;
+          flushBuffer();
+        } else {
+          buffer += part;
+        }
+      }
+      if (buffer) flushBuffer();
+      return result;
+    }
+
+    function highlightInline(text) {
+      // Escape HTML first
+      let out = escHtml(text);
+
+      // Complex phrases (longest first to avoid partial matches)
+      const sorted = [...COMPLEX_PHRASES].sort((a,b) => b[0].length - a[0].length);
+      for (const [phrase, alt] of sorted) {
+        const re = new RegExp(escRegex(phrase), 'gi');
+        out = out.replace(re, m => `<span class="hw-complex" title="Consider: ${alt}">${m}</span>`);
+      }
+
+      // Passive voice
+      out = out.replace(/\b(am|is|are|was|were|be|been|being)(\s+\w+ly\s+|\s+)(\w+ed|built|bought|brought|caught|dealt|felt|found|got|had|heard|held|kept|known|left|lost|made|meant|met|paid|put|read|said|seen|sent|shown|shut|sold|set|spent|stood|taken|taught|told|thought|understood|won|written)\b/gi,
+        m => `<span class="hw-passive" title="Passive voice">${m}</span>`);
+
+      // Adverbs
+      out = out.replace(/\b([a-zA-Z]+ly)\b/g, (m) => {
+        const lw = m.toLowerCase();
+        if (lw.length > 4 && !NOT_ADVERBS.has(lw)) return `<span class="hw-adverb" title="Adverb">${m}</span>`;
+        return m;
+      });
+
+      return out;
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function escRegex(s) {
+      return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // ── Hemingway toggle ──
+    let hemingwayActive = false;
+    function toggleHemingway() {
+      hemingwayActive = !hemingwayActive;
+      const ta = document.getElementById('textInput');
+      const view = document.getElementById('hemingway-view');
+      const legend = document.getElementById('hw-legend');
+      const btn = document.getElementById('btn-hemingway');
+      if (hemingwayActive) {
+        view.innerHTML = renderHemingway(ta.value);
+        view.classList.add('active');
+        ta.style.display = 'none';
+        legend.style.display = 'block';
+        btn.classList.add('btn-active');
+      } else {
+        view.classList.remove('active');
+        ta.style.display = '';
+        legend.style.display = 'none';
+        btn.classList.remove('btn-active');
+      }
+    }
 
     // ── Block bar renderer ──
     const BAR_W = 20;
@@ -902,6 +1037,7 @@
 
     function clearText() {
       document.getElementById('textInput').value = '';
+      if (hemingwayActive) toggleHemingway();
       analyzeText();
       toast('CLEARED');
     }
@@ -918,7 +1054,8 @@
 
       const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean) : [];
       const wc = words.length;
-      const sentences = text.split(/[.!?]+/).filter(s => s.trim()).length;
+      const sentenceList = text.split(/[.!?]+/).filter(s => s.trim());
+      const sentences = sentenceList.length;
       const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length;
       const lines = text.split('\n').length;
 
@@ -947,6 +1084,21 @@
       const excl        = (text.match(/!/g) || []).length;
       const ques        = (text.match(/\?/g) || []).length;
 
+      // Syllables + readability
+      const sylCount = totalSyllables(words);
+      const fkGrade  = fleschKincaidGrade(wc, sentences, sylCount);
+      const fkEase   = fleschReadingEase(wc, sentences, sylCount);
+
+      // Hemingway stats
+      const adverbs  = findAdverbs(words);
+      const passive  = countPassive(text);
+      const complex  = countComplexPhrases(text);
+      const hardSentences = sentenceList.filter(s => sentenceDifficulty(s) > 0).length;
+
+      // Avg sentence length
+      const avgSent = sentences ? Math.round(wc / sentences) : 0;
+
+      // Word frequency
       const freq = {};
       words.forEach(w => { const c = w.toLowerCase().replace(/[^a-z0-9']/g,''); if(c) freq[c]=(freq[c]||0)+1; });
       const unique   = Object.keys(freq).length;
@@ -966,6 +1118,7 @@
       setStat('stat-read-time', readTime);
       setStat('stat-speak-time', speakTime);
       setStat('stat-unique-words', unique.toLocaleString());
+      setStat('stat-syllables', sylCount.toLocaleString());
       setStat('stat-letters', letters.toLocaleString());
       setStat('stat-numbers', numbers.toLocaleString());
       setStat('stat-punctuation', punctuation.toLocaleString());
@@ -978,8 +1131,12 @@
       setStat('stat-longest-word', longest || '—');
       setStat('stat-urls', urls.toLocaleString());
       setStat('stat-emails', emails.toLocaleString());
+      setStat('stat-adverbs', adverbs.length.toLocaleString());
+      setStat('stat-passive', passive.toLocaleString());
       setStat('stat-repeated', repeated.toLocaleString());
       setStat('stat-density', density);
+      setStat('stat-complex', complex.toLocaleString());
+      setStat('stat-avg-sent', avgSent);
       setStat('stat-chars-no-space', charsNoSpace.toLocaleString());
       setStat('stat-lines', lines.toLocaleString());
       setStat('stat-nonascii', nonAscii.toLocaleString());
@@ -987,6 +1144,24 @@
       setStat('stat-mentions', mentions.toLocaleString());
       setStat('stat-exclamations', excl.toLocaleString());
       setStat('stat-questions', ques.toLocaleString());
+      setStat('stat-hw-hard', hardSentences.toLocaleString());
+
+      // Grade + ease
+      const gradeEl = document.getElementById('stat-grade');
+      const gradeLabelEl = document.getElementById('stat-grade-label');
+      const easeEl = document.getElementById('stat-ease');
+      const easeLabelEl = document.getElementById('stat-ease-label');
+      if (fkGrade !== null) {
+        gradeEl.textContent = Math.max(0, fkGrade).toFixed(1);
+        gradeLabelEl.textContent = gradeLabel(fkGrade);
+        easeEl.textContent = Math.min(100, Math.max(0, fkEase)).toFixed(0);
+        easeLabelEl.textContent = easeLabel(fkEase);
+      } else {
+        gradeEl.textContent = '—';
+        gradeLabelEl.textContent = 'Flesch-Kincaid';
+        easeEl.textContent = '—';
+        easeLabelEl.textContent = 'Flesch score';
+      }
 
       // Block bars
       document.getElementById('bar-letters').textContent     = blockBar(letters, total);
@@ -1022,12 +1197,12 @@
           .join('');
       } else { emojiSec.style.display = 'none'; }
 
-      // Top words
+      // Top words + keyword density
       const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','it','this','that','was','are','be','as','by','from','have','has','had','not','we','you','i','he','she','they','do','did','will','would','could','should','may','might','can','its','our','your','their','my','his','her','been','were','so','if','about','up','out','into','than','then','when','there','what','which','who','how','all','more','also','just','no','get','got','go','one','two','three','any','some','such','each','other','these','those','them','us','me','him','her']);
       const topWords = Object.entries(freq)
         .filter(([w]) => !stopWords.has(w) && w.length > 2)
         .sort((a,b) => b[1]-a[1])
-        .slice(0, 8);
+        .slice(0, 10);
 
       const twSec = document.getElementById('top-words-section');
       if (topWords.length > 0) {
@@ -1036,9 +1211,20 @@
         document.getElementById('top-words-list').innerHTML = topWords.map(([w,c]) => {
           const f = Math.round((c/max)*16);
           const bar = '█'.repeat(f) + '░'.repeat(16-f);
-          return `<div class="word-row"><span class="word-key">${w}</span><span class="word-bar">${bar}</span><span class="word-count">${c}</span></div>`;
+          const d = wc ? ((c/wc)*100).toFixed(1)+'%' : '0%';
+          return `<div class="word-row">
+            <span class="word-key">${w}</span>
+            <span class="word-bar">${bar}</span>
+            <span class="word-count">${c}</span>
+            <span class="word-density">${d}</span>
+          </div>`;
         }).join('');
       } else { twSec.style.display = 'none'; }
+
+      // Update hemingway view if active
+      if (hemingwayActive) {
+        document.getElementById('hemingway-view').innerHTML = renderHemingway(text);
+      }
 
       // Auto-resize textarea
       const ta = document.getElementById('textInput');
