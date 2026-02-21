@@ -4,7 +4,7 @@ Free online word counter and character counter — live text analysis tool.
 
 → **[words.awais.dev](https://words.awais.dev)**
 
-![Word Counter & Character Counter](https://raw.githubusercontent.com/ahmadawais/words/main/.github/cover.png)
+![words](https://github.com/user-attachments/assets/71e677c1-1a80-446f-9ea0-e729e6d2f661)
 
 ## Features
 
