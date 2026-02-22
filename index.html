@@ -3,1057 +3,321 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" id="theme-color-meta" />
-  <title>Word Counter &amp; Character Counter — Free Online Text Analysis Tool</title>
-  <meta name="description" content="Free online word counter and character counter. Instantly count words, characters, sentences, paragraphs, read time, speak time, unique words, vocabulary density, word frequency, emoji, URLs, hashtags, and more. No signup required." />
-  <meta name="keywords" content="word counter, character counter, online word counter, free word counter, character count, sentence counter, paragraph counter, word count tool, read time calculator, speak time calculator, vocabulary density, word frequency, text analyzer, readability score, Hemingway analyzer, keyword density, emoji counter, text statistics" />
-  <meta name="author" content="Ahmad Awais" />
-  <link rel="canonical" href="https://words.awais.dev/" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://words.awais.dev/" />
-  <meta property="og:title" content="Word Counter &amp; Character Counter — Free Online Text Analysis Tool" />
-  <meta property="og:description" content="Free online word counter and character counter. Instantly count words, characters, sentences, paragraphs, read time, speak time, unique words, vocabulary density, word frequency, emoji, URLs, and more." />
-  <meta property="og:site_name" content="WORDCOUNT" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@MrAhmadAwais" />
-  <meta name="twitter:title" content="Word Counter &amp; Character Counter — Free Online Text Analysis Tool" />
-  <meta name="twitter:description" content="Free online word counter and character counter. Count words, characters, sentences, paragraphs, read time, speak time, vocabulary density, word frequency, emoji, and more." />
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "WORDCOUNT — Word Counter &amp; Character Counter",
-    "url": "https://words.awais.dev/",
-    "description": "Free online word counter and character counter. Instantly count words, characters, sentences, paragraphs, read time, speak time, unique words, vocabulary density, word frequency, emoji, URLs, hashtags, and more.",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "featureList": [
-      "Word counter",
-      "Character counter",
-      "Sentence counter",
-      "Paragraph counter",
-      "Read time calculator",
-      "Speak time calculator",
-      "Unique word counter",
-      "Vocabulary density",
-      "Word frequency chart",
-      "Emoji counter",
-      "URL detection",
-      "Hashtag detection",
-      "Mention detection",
-      "Readability score",
-      "Hemingway analyzer",
-      "Keyword density",
-      "Dark and light theme"
-    ],
-    "author": {
-      "@type": "Person",
-      "name": "Ahmad Awais",
-      "url": "https://awais.dev"
+  <meta name="theme-color" content="#000000" />
+  <title>WORDS — High-Fidelity Text Analysis</title>
+  <meta name="description" content="Premium word and character counter with Hemingway analysis. Privacy-first, local execution." />
+  
+  <!-- Fonts: Outfit (Sans) + JetBrains Mono (Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            black: '#000000',
+            zinc: {
+              850: '#1f1f22',
+              900: '#18181b',
+              950: '#09090b',
+            },
+            accent: {
+              DEFAULT: '#00ccff', // Electric Blue
+              glow: 'rgba(0, 204, 255, 0.15)',
+            }
+          },
+          backgroundImage: {
+            'grid-pattern': "linear-gradient(to right, #1f1f22 1px, transparent 1px), linear-gradient(to bottom, #1f1f22 1px, transparent 1px)",
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
     }
-  }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-      border-radius: 0 !important;
-      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    /* Glass Effects */
+    .glass-panel {
+      background: rgba(24, 24, 27, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .glass-input {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
     }
 
-    :root {
-      --bg:       #000000;
-      --surface:  #080808;
-      --border:   #1a1a1a;
-      --dash:     #222222;
-      --accent:   #00FF41;
-      --accent2:  #FFB000;
-      --accent3:  #00FFFF;
-      --accent4:  #C7B8F5;
-      --text:     #C8C8C8;
-      --dim:      #444444;
-      --bright:   #FFFFFF;
-      --red:      #FF3B30;
-      --blue:     #007AFF;
-      --hw-hard:       rgba(255,176,0,0.18);
-      --hw-very-hard:  rgba(255,59,48,0.18);
-      --hw-adverb:     rgba(199,184,245,0.25);
-      --hw-passive:    rgba(0,255,65,0.15);
-      --hw-complex:    rgba(0,255,255,0.15);
-    }
-    html.light {
-      --bg:       #F0EDE6;
-      --surface:  #F8F5EE;
-      --border:   #C8C0A8;
-      --dash:     #B0A898;
-      --accent:   #1A6B2A;
-      --accent2:  #8B5E00;
-      --accent3:  #006B6B;
-      --accent4:  #5856D6;
-      --text:     #1A1A1A;
-      --dim:      #888888;
-      --bright:   #000000;
-      --red:      #CC2200;
-      --blue:     #0055CC;
-      --hw-hard:       rgba(180,120,0,0.15);
-      --hw-very-hard:  rgba(180,0,0,0.12);
-      --hw-adverb:     rgba(88,86,214,0.15);
-      --hw-passive:    rgba(26,107,42,0.15);
-      --hw-complex:    rgba(0,107,107,0.15);
-    }
+    /* Selection */
+    ::selection { background: rgba(0, 204, 255, 0.2); color: #fff; }
 
-    html {
-      scroll-behavior: smooth;
-      color-scheme: dark;
-    }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-      background-size: 8px 10px;
-      transition: background-color 0.2s, color 0.2s;
-      overflow-x: hidden;
-    }
-    html.light { color-scheme: light; }
-    h1, h2, h3, h4, h5, h6 {
-      scroll-margin-top: 88px;
-      text-wrap: balance;
-    }
-    .skip-link {
-      position: absolute;
-      left: 16px;
-      top: -48px;
-      padding: 8px 12px;
-      border: 1px solid var(--accent);
-      background: var(--surface);
-      color: var(--bright);
-      text-decoration: none;
-      z-index: 1000;
-      transition: top 0.15s ease;
-    }
-    .skip-link:focus-visible {
-      top: 12px;
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+    /* Hemingway Highlights */
+    .hw-very-hard { background: rgba(239, 68, 68, 0.2); border-bottom: 1px solid rgba(239, 68, 68, 0.4); }
+    .hw-hard { background: rgba(234, 179, 8, 0.2); border-bottom: 1px solid rgba(234, 179, 8, 0.4); }
+    .hw-adverb { border-bottom: 2px solid rgba(167, 139, 250, 0.6); }
+    .hw-passive { border-bottom: 2px solid rgba(52, 211, 153, 0.6); }
+    .hw-complex { border-bottom: 2px solid rgba(0, 204, 255, 0.6); }
 
-    /* ── Dashed Border System ── */
-    .dash-top-right {
-      border-top: 1px dashed transparent;
-      border-right: 1px dashed transparent;
-      background-image:
-        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
-        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px);
-      background-position: right top, left top;
-      background-size: 1px 7px, 7px 1px;
-      background-repeat: repeat-y, repeat-x;
-      background-origin: border-box;
-      background-clip: border-box;
-    }
-    .dash-right {
-      border-right: 1px dashed transparent;
-      background-image: repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px);
-      background-repeat: repeat-y;
-      background-position: right;
-      background-size: 1px 7px;
-      background-origin: border-box;
-    }
-    .dash-top {
-      border-top: 1px dashed transparent;
-      background-image: repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
-      background-position: left top;
-      background-size: 7px 1px;
-      background-repeat: repeat-x;
-      background-origin: border-box;
-      background-clip: border-box;
-    }
-    .dash-bottom {
-      border-bottom: 1px dashed transparent;
-      background-image: repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
-      background-repeat: repeat-x;
-      background-position: left bottom;
-      background-size: 7px 1px;
-      background-origin: border-box;
-      background-clip: border-box;
-    }
-    .dash-left {
-      border-left: 1px dashed transparent;
-      background-image: repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px);
-      background-repeat: repeat-y;
-      background-position: left;
-      background-size: 1px 7px;
-      background-origin: border-box;
-    }
-    .dash-y {
-      border-top: 1px dashed transparent;
-      border-bottom: 1px dashed transparent;
-      background-image:
-        repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px),
-        repeating-linear-gradient(to right, var(--dash) 0 5px, transparent 5px 7px);
-      background-position: left top, left bottom;
-      background-size: 7px 1px;
-      background-repeat: repeat-x;
-      background-origin: border-box;
-      background-clip: border-box;
-    }
-    .dash-all {
-      border: 1px dashed transparent;
-      background-image:
-        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
-        repeating-linear-gradient(to bottom, var(--dash) 0 5px, transparent 5px 7px),
-        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px),
-        repeating-linear-gradient(to right,  var(--dash) 0 5px, transparent 5px 7px);
-      background-position: left top, right top, left top, left bottom;
-      background-size: 1px 7px, 1px 7px, 7px 1px, 7px 1px;
-      background-repeat: repeat-y, repeat-y, repeat-x, repeat-x;
-      background-origin: border-box;
-      background-clip: border-box;
-    }
-
-    /* ── Corner Boxes ── */
-    .corner-box {
-      position: absolute;
-      width: 10px; height: 10px;
-      background: var(--bg);
-      border: 1px solid var(--dash);
-      z-index: 99;
-    }
-    .corner-tl { top: 0; left: 0; transform: translate(-50%, -50%); }
-    .corner-tr { top: 0; right: 0; transform: translate(50%, -50%); }
-    .corner-bl { bottom: 0; left: 0; transform: translate(-50%, 50%); }
-    .corner-br { bottom: 0; right: 0; transform: translate(50%, 50%); }
-
-    /* ── Gradient Accent Bar ── */
-    .accent-bar {
-      position: absolute;
-      left: 0; top: 0;
-      width: 1.6px; height: 100%;
-      background: linear-gradient(
-        to bottom,
-        #00FF41 0%, #00FF41 20%,
-        #FFB000 40%, #FFB000 45%,
-        #00FFFF 65%, #00FFFF 70%,
-        #C7B8F5 90%, #C7B8F5 100%
-      );
-      z-index: 0;
-      transform: translateX(-0.8px);
-      animation: barReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-    }
-    @keyframes barReveal {
-      from { clip-path: inset(100% 0 0 0); }
-      to   { clip-path: inset(0 0 0 0); }
-    }
-
-    /* ── Header ── */
-    header {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--bg);
-      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-      background-size: 8px 10px;
-    }
-    .header-inner {
-      max-width: 680px; margin: 0 auto;
-      padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .header-left { display: flex; align-items: center; gap: 10px; }
-    .logo-box {
-      width: 28px; height: 28px;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .logo-box svg { display: block; }
-    .header-title {
-      font-size: 13px; font-weight: 700;
-      color: var(--bright); letter-spacing: 0.05em; white-space: nowrap;
-    }
-    .header-title .comment { color: var(--dim); }
-    .header-title .version { color: var(--dim); font-weight: 400; }
-
-    .live-dot {
-      width: 6px; height: 6px;
-      background: var(--accent); display: inline-block;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    .header-words { font-size: 11px; color: var(--dim); white-space: nowrap; }
-    .header-words span { color: var(--accent); font-weight: 700; }
-
-    .theme-toggle-wrap { display: flex; align-items: center; gap: 6px; }
-    .theme-label { font-size: 10px; color: var(--dim); }
-    .toggle-track {
-      width: 44px; height: 22px;
-      background: var(--surface); border: 1px solid var(--dash);
-      position: relative; cursor: pointer; flex-shrink: 0;
-      padding: 0; appearance: none;
-      display: inline-flex; align-items: center; justify-content: flex-start;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: rgba(0, 255, 65, 0.2);
-    }
-    .toggle-thumb {
-      position: absolute; width: 16px; height: 16px;
-      background: var(--accent); top: 2px; left: 2px; transition: transform 0.2s;
-      pointer-events: none;
-    }
-    html.light .toggle-thumb { transform: translateX(22px); }
-    .toggle-track:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* ── Main ── */
-    main { max-width: 680px; margin: 0 auto; padding: 0 16px 80px; position: relative; box-sizing: border-box; }
-    .main-wrap { position: relative; border: 1px solid var(--dash); background: var(--surface); width: 100%; }
-
-    /* ── Section Labels ── */
-    .sec-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--dim);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .sec-label::before { content: '//'; color: var(--accent); }
-    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--dash); }
-
-    /* ── Input Section ── */
-    .input-section { padding: 16px; position: relative; }
-    .prompt-row {
-      display: flex; align-items: flex-start; gap: 8px; margin-top: 12px;
-      border-left: 2px solid transparent; padding-left: 6px;
-    }
-    .prompt-row:focus-within {
-      border-left-color: transparent;
-    }
-    .prompt-char {
-      color: var(--accent); font-size: 14px; font-weight: 700;
-      line-height: 1.6; padding-top: 10px; flex-shrink: 0; user-select: none;
-    }
-    textarea {
-      flex: 1; background: transparent; border: none; outline: 1px solid transparent;
-      color: var(--bright); font-size: 16px; line-height: 1.6;
-      padding: 10px 0 0 0; resize: none;
-      min-height: 140px; max-height: 380px;
-      caret-color: currentColor; width: 100%;
-    }
-    textarea::placeholder { color: var(--dim); }
-    textarea:focus-visible {
-      outline: none;
-      outline-offset: 0;
-    }
-    .input-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 10px; padding-top: 10px;
-    }
-    .input-meta-left { display: flex; gap: 12px; }
-    .meta-chip { font-size: 11px; color: var(--dim); }
-    .meta-chip span { color: var(--accent); font-weight: 700; }
-    .meta-read { font-size: 10px; color: var(--dim); }
-
-    .input-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .btn {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      padding: 5px 12px; border: 1px solid var(--dash);
-      background: transparent; color: var(--dim);
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s, background-color 0.15s;
-      text-transform: uppercase;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: rgba(0, 255, 65, 0.2);
-    }
-    .btn:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-danger:hover { border-color: var(--red); color: var(--red); }
-    .btn-active { border-color: var(--accent2) !important; color: var(--accent2) !important; }
-    .btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .btn-danger:focus-visible {
-      outline-color: var(--red);
-      border-color: var(--red);
-      color: var(--red);
-    }
-    @media (max-width: 420px) {
-      .btn-row { gap: 6px; }
-      .btn {
-        font-size: 10px;
-        letter-spacing: 0.04em;
-        padding: 4px 8px;
-      }
-    }
-
-    /* ── Hemingway View ── */
-    .hemingway-view {
-      display: none;
-      padding: 10px 0 0 0;
-      font-size: 14px; line-height: 1.6;
-      color: var(--bright);
-      min-height: 140px;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .hemingway-view.active { display: block; }
-    .hw-hard    { background: var(--hw-hard); }
-    .hw-very-hard { background: var(--hw-very-hard); }
-    .hw-adverb  { border-bottom: 2px solid var(--accent4); }
-    .hw-passive { border-bottom: 2px solid var(--accent); }
-    .hw-complex { border-bottom: 2px solid var(--accent3); }
-
-    .hw-legend {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      padding: 10px 0 0 0; margin-top: 10px;
-    }
-    .hw-legend-item {
-      display: flex; align-items: center; gap: 5px;
-      font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em;
-    }
-    .hw-legend-dot {
-      width: 10px; height: 10px; flex-shrink: 0;
-    }
-
-    /* ── Primary Stats Grid ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .stats-grid > * { min-width: 0; }
-    @media (min-width: 480px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-    .stat-cell { padding: 16px; position: relative; min-width: 0; overflow: hidden; }
-    .stat-cell-label { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
-    .stat-cell-value {
-      font-size: 32px; font-weight: 700; color: var(--bright);
-      line-height: 1; font-variant-numeric: tabular-nums;
-      transition: color 0.15s, transform 0.15s;
-    }
-    .stat-cell-value.pop { color: var(--accent); transform: scale(1.08); }
-    .stat-cell-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
-
-    /* ── Time / Grade Row ── */
-    .time-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .time-grid > * { min-width: 0; }
-    @media (min-width: 480px) { .time-grid { grid-template-columns: repeat(4, 1fr); } }
-    .time-cell { padding: 14px 16px; position: relative; min-width: 0; overflow: hidden; }
-    .time-cell-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-    .time-cell-val {
-      font-size: 20px; font-weight: 700; color: var(--bright);
-      font-variant-numeric: tabular-nums; transition: color 0.15s;
-    }
-    .time-cell-val.pop { color: var(--accent); }
-    .time-cell-hint { font-size: 10px; color: var(--dim); margin-top: 2px; }
-
-    /* ── Readability Row ── */
-    .readability-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .readability-grid > * { min-width: 0; }
-    @media (min-width: 480px) { .readability-grid { grid-template-columns: repeat(3, 1fr); } }
-    .readability-cell { padding: 14px 16px; position: relative; min-width: 0; overflow: hidden; }
-    .readability-key { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-    .readability-val {
-      font-size: 20px; font-weight: 700; color: var(--bright);
-      font-variant-numeric: tabular-nums; transition: color 0.15s;
-    }
-    .readability-val.pop { color: var(--accent2); }
-    .readability-hint { font-size: 10px; color: var(--dim); margin-top: 2px; }
-
-    /* ── Character Breakdown ── */
-    .breakdown-section { padding: 16px; }
-    .breakdown-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 12px; }
-    .breakdown-key { width: 90px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; flex-shrink: 0; }
-    .block-bar { flex: 1; color: var(--accent); letter-spacing: -1px; font-size: 11px; overflow: hidden; white-space: nowrap; }
-    .block-bar .filled { color: var(--accent); }
-    .block-bar .empty  { color: var(--border); }
-    .breakdown-pct { width: 36px; text-align: right; color: var(--dim); font-size: 11px; flex-shrink: 0; }
-    .breakdown-count { width: 48px; text-align: right; color: var(--bright); font-size: 11px; font-weight: 700; flex-shrink: 0; }
-
-    /* ── Fun Facts Grid ── */
-    .facts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .facts-grid > * { min-width: 0; }
-    @media (min-width: 480px) { .facts-grid { grid-template-columns: repeat(4, 1fr); } }
-    .fact-cell { padding: 14px 16px; position: relative; min-width: 0; overflow: hidden; }
-    .fact-key { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .fact-val {
-      font-size: 18px; font-weight: 700; color: var(--bright);
-      font-variant-numeric: tabular-nums; transition: color 0.15s;
-      display: block; max-width: 100%;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .fact-val.pop { color: var(--accent2); }
-
-    /* ── Top Words ── */
-    .words-section { padding: 16px; }
-    .word-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12px; }
-    .word-key { width: 100px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 0; }
-    .word-bar { flex: 1; color: var(--accent3); font-size: 11px; letter-spacing: -1px; }
-    .word-count { width: 28px; text-align: right; color: var(--dim); font-size: 11px; flex-shrink: 0; }
-    .word-density { width: 36px; text-align: right; color: var(--accent2); font-size: 11px; flex-shrink: 0; }
-
-    /* ── More Counts ── */
-    .more-section { padding: 16px; }
-    .more-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; font-size: 12px; }
-    .more-key { color: var(--dim); }
-    .more-dots { flex: 1; margin: 0 8px; overflow: hidden; color: var(--border); letter-spacing: 2px; white-space: nowrap; }
-    .more-val { color: var(--bright); font-weight: 700; font-variant-numeric: tabular-nums; }
-
-    /* ── Emoji Section ── */
-    .emoji-section { padding: 16px; }
-    .emoji-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .emoji-chip { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--dash); background: var(--bg); font-size: 18px; }
-    .emoji-chip-count { font-size: 11px; color: var(--dim); }
-
-    /* ── About Section ── */
-    .about-section { padding: 24px 16px; }
-    .about-title {
-      font-size: 13px; font-weight: 700; color: var(--bright);
-      letter-spacing: 0.05em; margin-bottom: 12px;
-    }
-    .about-body { font-size: 12px; color: var(--dim); line-height: 1.8; }
-    .about-body p { margin-bottom: 10px; }
-    .about-body p:last-child { margin-bottom: 0; }
-    .about-body strong { color: var(--text); font-weight: 700; }
-    .about-feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin: 12px 0;
-    }
-    @media (min-width: 480px) { .about-feature-grid { grid-template-columns: repeat(3, 1fr); } }
-    .about-feature {
-      padding: 8px 10px;
-      border: 1px solid var(--dash);
-      font-size: 10px;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .about-feature::before { content: '→ '; color: var(--accent); }
-
-    /* ── Toast ── */
-    #toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(12px);
-      z-index: 999; opacity: 0; pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast-inner {
-      background: var(--surface); border: 1px solid var(--accent);
-      padding: 10px 20px; display: flex; align-items: center; gap: 10px;
-      font-size: 12px; color: var(--bright);
-    }
-    .toast-dot { width: 6px; height: 6px; background: var(--accent); flex-shrink: 0; }
-
-    a:hover { color: var(--accent2); }
-    a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* ── Animations ── */
-    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-    .fade-in { animation: fadeIn 0.4s ease both; }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      .fade-in,
-      .accent-bar,
-      .live-dot {
-        animation: none !important;
-      }
-    }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--dash); }
+    /* Utility */
+    .text-balance { text-wrap: balance; }
   </style>
 </head>
-<body>
-  <a class="skip-link" href="#main-content">Skip to Main Content</a>
+<body class="bg-black text-zinc-400 font-sans min-h-screen selection:bg-accent/20 overflow-x-hidden">
 
-  <!-- ══ HEADER ══ -->
-  <header class="dash-bottom">
-    <div class="header-inner">
-      <div class="header-left">
-        <div class="logo-box">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="square" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
+  <!-- Background Grid -->
+  <div class="fixed inset-0 bg-[size:40px_40px] bg-grid-pattern opacity-20 pointer-events-none z-0"></div>
+  <div class="fixed inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-0"></div>
+
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/80 backdrop-blur-xl">
+    <div class="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+          <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
           </svg>
         </div>
-        <div>
-          <h1 class="header-title">
-            <span class="comment">// </span>WORDCOUNT<span class="version"> v1.3</span>
-          </h1>
-          <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
-            <div class="live-dot" aria-hidden="true"></div>
-            <span style="font-size:10px;color:var(--dim)">LIVE ANALYSIS</span>
-          </div>
-        </div>
+        <h1 class="text-sm font-bold tracking-widest text-white">WORDS <span class="text-zinc-600 font-normal">/ ANALYZER</span></h1>
       </div>
-      <div style="display:flex;align-items:center;gap:16px">
-        <div class="header-words"><span id="header-words">0</span> WORDS</div>
-        <div class="theme-toggle-wrap">
-          <span class="theme-label" aria-hidden="true">☀</span>
-          <button class="toggle-track" id="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle Color Theme" aria-pressed="true">
-            <span class="toggle-thumb" aria-hidden="true"></span>
-          </button>
-          <span class="theme-label" aria-hidden="true">☾</span>
+      
+      <div class="flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-2 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-emerald-500">SYSTEM ACTIVE</span>
         </div>
+        <a href="https://awais.dev" target="_blank" class="text-xs font-medium hover:text-white transition-colors">AWAIS.DEV</a>
       </div>
     </div>
   </header>
 
-  <!-- ══ MAIN ══ -->
-  <main id="main-content" tabindex="-1">
-    <div class="main-wrap fade-in" style="margin-top:20px;position:relative">
-
-      <div class="accent-bar"></div>
-      <div class="corner-box corner-tl"></div>
-      <div class="corner-box corner-tr"></div>
-      <div class="corner-box corner-bl"></div>
-      <div class="corner-box corner-br"></div>
-
-      <!-- ── INPUT ── -->
-      <div class="input-section dash-bottom">
-        <div class="input-head">
-          <h2 class="sec-label">INPUT</h2>
-          <div class="btn-row">
-            <button class="btn" id="btn-hemingway" type="button" onclick="toggleHemingway()">[ HEMINGWAY ]</button>
-            <button class="btn" type="button" onclick="copyText()" aria-label="Copy Text">[ COPY ]</button>
-            <button class="btn btn-danger" type="button" onclick="clearText()" aria-label="Clear Text">[ CLR ]</button>
+  <!-- Main Layout -->
+  <main class="relative z-10 pt-24 pb-20 px-4 md:px-6 max-w-[1400px] mx-auto">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Input (lg:col-span-7) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        
+        <!-- Editor Card -->
+        <div class="glass-panel rounded-3xl p-1 min-h-[500px] flex flex-col relative group transition-all duration-500 hover:border-white/20">
+          
+          <!-- Toolbar -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-bold tracking-wider text-zinc-500">INPUT SOURCE</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="toggleHemingway()" id="btn-hemingway" class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase border border-white/10 rounded-md hover:bg-white/5 hover:text-white transition-colors">Hemingway Mode</button>
+              <button onclick="copyText()" class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase border border-white/10 rounded-md hover:bg-white/5 hover:text-white transition-colors">Copy</button>
+              <button onclick="clearText()" class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase border border-red-500/20 text-red-400 rounded-md hover:bg-red-500/10 transition-colors">Clear</button>
+            </div>
           </div>
-        </div>
-        <div class="prompt-row">
-          <div class="prompt-char" aria-hidden="true">›</div>
-          <div style="flex:1;position:relative">
-            <label for="textInput" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Text to Analyze</label>
-            <textarea
-              id="textInput"
-              name="text"
-              placeholder="paste or type text here…"
-              aria-label="Text to Analyze"
-              autocomplete="off"
+
+          <!-- Text Area -->
+          <div class="flex-1 relative p-6">
+            <textarea 
+              id="textInput" 
+              class="w-full h-full bg-transparent border-none outline-none text-lg leading-relaxed text-zinc-200 placeholder-zinc-700 font-mono resize-none"
+              placeholder="Start typing or paste your text here..."
               oninput="analyzeText()"
-              spellcheck="true"
+              spellcheck="false"
             ></textarea>
-            <div class="hemingway-view" id="hemingway-view"></div>
+            
+            <!-- Hemingway Overlay -->
+            <div id="hemingway-view" class="absolute inset-6 pointer-events-none hidden text-lg leading-relaxed font-mono whitespace-pre-wrap break-words text-zinc-200"></div>
+          </div>
+
+          <!-- Footer Meta -->
+          <div class="px-6 py-3 border-t border-white/5 flex items-center justify-between bg-black/20 rounded-b-[20px]">
+             <div class="flex gap-4 text-xs font-mono text-zinc-500">
+               <span><span id="char-count-inline" class="text-white">0</span> CHARS</span>
+               <span><span id="word-count-inline" class="text-white">0</span> WORDS</span>
+             </div>
+             <div class="text-xs font-mono text-accent" id="reading-time-inline">~0s READ</div>
           </div>
         </div>
 
-        <!-- Hemingway Legend -->
-        <div id="hw-legend" class="dash-top" style="display:none;padding-top:10px;margin-top:10px">
-          <div class="hw-legend">
-            <div class="hw-legend-item">
-              <div class="hw-legend-dot" style="background:var(--hw-very-hard);border:1px solid var(--red)"></div>
-              Very hard sentence
-            </div>
-            <div class="hw-legend-item">
-              <div class="hw-legend-dot" style="background:var(--hw-hard);border:1px solid var(--accent2)"></div>
-              Hard sentence
-            </div>
-            <div class="hw-legend-item">
-              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent4);width:16px;height:10px"></div>
-              Adverb
-            </div>
-            <div class="hw-legend-item">
-              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent);width:16px;height:10px"></div>
-              Passive voice
-            </div>
-            <div class="hw-legend-item">
-              <div class="hw-legend-dot" style="background:transparent;border-bottom:2px solid var(--accent3);width:16px;height:10px"></div>
-              Complex phrase
-            </div>
+        <!-- Hemingway Legend (Hidden by default) -->
+        <div id="hw-legend" class="hidden glass-panel rounded-xl p-4">
+          <div class="flex flex-wrap gap-4 text-xs font-mono">
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-red-500/20 border border-red-500/50"></span> Very Hard</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-yellow-500/20 border border-yellow-500/50"></span> Hard</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 border-b-2 border-violet-400"></span> Adverb</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 border-b-2 border-emerald-400"></span> Passive</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 border-b-2 border-accent"></span> Complex</div>
           </div>
         </div>
 
-        <div class="input-meta dash-top" style="padding-top:10px;margin-top:10px">
-          <div class="input-meta-left">
-            <div class="meta-chip"><span id="char-count-inline">0</span> CHARS</div>
-            <div class="meta-chip"><span id="word-count-inline">0</span> WORDS</div>
+      </div>
+
+      <!-- Right Column: Stats (lg:col-span-5) -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        
+        <!-- Primary Bento Grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Total Words -->
+          <div class="col-span-2 glass-panel rounded-3xl p-6 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-3 opacity-50 group-hover:opacity-100 transition-opacity">
+               <svg class="w-5 h-5 text-white/20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <p class="text-xs font-bold tracking-widest text-zinc-500 mb-2 uppercase">Total Words</p>
+            <h3 class="text-5xl md:text-6xl font-black text-white tracking-tighter" id="stat-words">0</h3>
+            <div class="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+              <div class="h-full bg-accent w-0 transition-all duration-700" id="progress-bar"></div>
+            </div>
           </div>
-          <div class="meta-read" id="reading-time-inline">~0s READ</div>
-        </div>
-      </div>
 
-      <!-- ── PRIMARY STATS ── -->
-      <div class="stats-grid">
-        <div class="stat-cell dash-top-right">
-          <div class="stat-cell-label">Words</div>
-          <div class="stat-cell-value" id="stat-words">0</div>
-          <div class="stat-cell-sub">total tokens</div>
-        </div>
-        <div class="stat-cell dash-top-right">
-          <div class="stat-cell-label">Characters</div>
-          <div class="stat-cell-value" id="stat-chars">0</div>
-          <div class="stat-cell-sub">incl. spaces</div>
-        </div>
-        <div class="stat-cell dash-top-right">
-          <div class="stat-cell-label">Sentences</div>
-          <div class="stat-cell-value" id="stat-sentences">0</div>
-          <div class="stat-cell-sub">by punctuation</div>
-        </div>
-        <div class="stat-cell dash-top">
-          <div class="stat-cell-label">Paragraphs</div>
-          <div class="stat-cell-value" id="stat-paragraphs">0</div>
-          <div class="stat-cell-sub">blank-line sep.</div>
-        </div>
-      </div>
+          <!-- Characters -->
+          <div class="glass-panel rounded-3xl p-6">
+             <p class="text-[10px] font-bold tracking-widest text-zinc-500 mb-2 uppercase">Characters</p>
+             <h3 class="text-3xl font-bold text-white font-mono" id="stat-chars">0</h3>
+             <p class="text-xs text-zinc-600 mt-1">incl. spaces</p>
+          </div>
 
-      <!-- ── TIME + UNIQUE ── -->
-      <div class="time-grid">
-        <div class="time-cell dash-top-right">
-          <div class="time-cell-key">Read time</div>
-          <div class="time-cell-val" id="stat-read-time">0s</div>
-          <div class="time-cell-hint">@ 238 wpm</div>
+          <!-- Sentences & Paragraphs -->
+          <div class="glass-panel rounded-3xl p-6">
+             <div class="flex flex-col h-full justify-between">
+                <div>
+                  <p class="text-[10px] font-bold tracking-widest text-zinc-500 mb-1 uppercase">Sentences</p>
+                  <h3 class="text-2xl font-bold text-white font-mono" id="stat-sentences">0</h3>
+                </div>
+                <div class="mt-3 pt-3 border-t border-white/5">
+                  <p class="text-[10px] font-bold tracking-widest text-zinc-500 mb-1 uppercase">Paragraphs</p>
+                  <h3 class="text-xl font-bold text-zinc-300 font-mono" id="stat-paragraphs">0</h3>
+                </div>
+             </div>
+          </div>
         </div>
-        <div class="time-cell dash-top-right">
-          <div class="time-cell-key">Speak time</div>
-          <div class="time-cell-val" id="stat-speak-time">0s</div>
-          <div class="time-cell-hint">@ 130 wpm</div>
-        </div>
-        <div class="time-cell dash-top-right">
-          <div class="time-cell-key">Unique words</div>
-          <div class="time-cell-val" id="stat-unique-words">0</div>
-          <div class="time-cell-hint">distinct tokens</div>
-        </div>
-        <div class="time-cell dash-top">
-          <div class="time-cell-key">Syllables</div>
-          <div class="time-cell-val" id="stat-syllables">0</div>
-          <div class="time-cell-hint">total count</div>
-        </div>
-      </div>
 
-      <!-- ── READABILITY ── -->
-      <div class="readability-grid">
-        <div class="readability-cell dash-top-right">
-          <div class="readability-key">Grade Level</div>
-          <div class="readability-val" id="stat-grade">—</div>
-          <div class="readability-hint" id="stat-grade-label">Flesch-Kincaid</div>
-        </div>
-        <div class="readability-cell dash-top-right">
-          <div class="readability-key">Reading Ease</div>
-          <div class="readability-val" id="stat-ease">—</div>
-          <div class="readability-hint" id="stat-ease-label">Flesch score</div>
-        </div>
-        <div class="readability-cell dash-top">
-          <div class="readability-key">Hemingway</div>
-          <div class="readability-val" id="stat-hw-hard">0</div>
-          <div class="readability-hint" id="stat-hw-hint">hard sentences</div>
-        </div>
-      </div>
+        <!-- Secondary Stats -->
+        <div class="glass-panel rounded-3xl p-6 grid grid-cols-3 gap-y-6 gap-x-4">
+          
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Read Time</p>
+             <p class="text-xl font-bold text-white font-mono" id="stat-read-time">0s</p>
+          </div>
+          
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Speak Time</p>
+             <p class="text-xl font-bold text-white font-mono" id="stat-speak-time">0s</p>
+          </div>
 
-      <!-- ── CHARACTER BREAKDOWN ── -->
-      <div class="breakdown-section dash-top">
-        <h2 class="sec-label" style="margin-bottom:10px">CHARACTER BREAKDOWN</h2>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Letters</div>
-          <div class="block-bar" id="bar-letters">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-letters">0%</div>
-          <div class="breakdown-count" id="stat-letters">0</div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Numbers</div>
-          <div class="block-bar" id="bar-numbers" style="color:var(--accent2)">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-numbers">0%</div>
-          <div class="breakdown-count" id="stat-numbers">0</div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Punctuation</div>
-          <div class="block-bar" id="bar-punctuation" style="color:var(--accent3)">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-punctuation">0%</div>
-          <div class="breakdown-count" id="stat-punctuation">0</div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Spaces</div>
-          <div class="block-bar" id="bar-spaces" style="color:var(--accent4)">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-spaces">0%</div>
-          <div class="breakdown-count" id="stat-spaces">0</div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Emojis</div>
-          <div class="block-bar" id="bar-emojis" style="color:#FF2D55">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-emojis">0%</div>
-          <div class="breakdown-count" id="stat-emojis">0</div>
-        </div>
-        <div class="breakdown-row">
-          <div class="breakdown-key">Special</div>
-          <div class="block-bar" id="bar-special" style="color:#5AC8FA">░░░░░░░░░░░░░░░░░░░░</div>
-          <div class="breakdown-pct" id="pct-special">0%</div>
-          <div class="breakdown-count" id="stat-special">0</div>
-        </div>
-      </div>
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Unique</p>
+             <p class="text-xl font-bold text-white font-mono" id="stat-unique-words">0</p>
+          </div>
 
-      <!-- ── EMOJI SHOWCASE ── -->
-      <div class="emoji-section dash-top" id="emoji-section" style="display:none">
-        <h2 class="sec-label" style="margin-bottom:0">EMOJIS FOUND</h2>
-        <div class="emoji-grid" id="emoji-list"></div>
-      </div>
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Grade Lvl</p>
+             <p class="text-xl font-bold text-white font-mono" id="stat-grade">—</p>
+          </div>
 
-      <!-- ── FUN FACTS ── -->
-      <div class="facts-grid">
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Uppercase</div>
-          <div class="fact-val" id="stat-uppercase">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Lowercase</div>
-          <div class="fact-val" id="stat-lowercase">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Avg word</div>
-          <div class="fact-val" id="stat-avg-word">0</div>
-        </div>
-        <div class="fact-cell dash-top">
-          <div class="fact-key">Longest</div>
-          <div class="fact-val" id="stat-longest-word" style="font-size:13px">—</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">URLs</div>
-          <div class="fact-val" id="stat-urls">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Emails</div>
-          <div class="fact-val" id="stat-emails">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Adverbs</div>
-          <div class="fact-val" id="stat-adverbs">0</div>
-        </div>
-        <div class="fact-cell dash-top">
-          <div class="fact-key">Passive</div>
-          <div class="fact-val" id="stat-passive">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Repeated</div>
-          <div class="fact-val" id="stat-repeated">0</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Density</div>
-          <div class="fact-val" id="stat-density">0%</div>
-        </div>
-        <div class="fact-cell dash-top-right">
-          <div class="fact-key">Complex</div>
-          <div class="fact-val" id="stat-complex">0</div>
-        </div>
-        <div class="fact-cell dash-top">
-          <div class="fact-key">Avg sent.</div>
-          <div class="fact-val" id="stat-avg-sent">0</div>
-        </div>
-      </div>
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Ease Score</p>
+             <p class="text-xl font-bold text-white font-mono" id="stat-ease">—</p>
+          </div>
 
-      <!-- ── TOP WORDS ── -->
-      <div class="words-section dash-top" id="top-words-section" style="display:none">
-        <h2 class="sec-label" style="margin-bottom:10px">TOP KEYWORDS + DENSITY</h2>
-        <div id="top-words-list"></div>
-      </div>
+          <div class="col-span-1">
+             <p class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Complex</p>
+             <p class="text-xl font-bold text-accent font-mono" id="stat-complex">0</p>
+          </div>
+        </div>
 
-      <!-- ── MORE COUNTS ── -->
-      <div class="more-section dash-top">
-        <h2 class="sec-label" style="margin-bottom:10px">MORE COUNTS</h2>
-        <div class="more-row">
-          <span class="more-key">Chars (no spaces)</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-chars-no-space">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Lines</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-lines">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Non-ASCII</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-nonascii">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Hashtags (#)</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-hashtags">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Mentions (@)</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-mentions">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Exclamations (!)</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-exclamations">0</span>
-        </div>
-        <div class="more-row">
-          <span class="more-key">Questions (?)</span>
-          <span class="more-dots">················································</span>
-          <span class="more-val" id="stat-questions">0</span>
-        </div>
-      </div>
+        <!-- Composition & Top Words -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Composition -->
+            <div class="glass-panel rounded-3xl p-6 flex flex-col gap-4">
+              <p class="text-xs font-bold tracking-widest text-zinc-500 uppercase">Composition</p>
+              
+              <div class="space-y-3">
+                <div class="flex items-center gap-3 text-xs">
+                  <span class="w-14 text-zinc-500">Letters</span>
+                  <div class="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div id="bar-letters-fill" class="h-full bg-zinc-400 w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-3 text-xs">
+                  <span class="w-14 text-zinc-500">Numbers</span>
+                  <div class="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div id="bar-numbers-fill" class="h-full bg-accent w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-3 text-xs">
+                  <span class="w-14 text-zinc-500">Spaces</span>
+                  <div class="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div id="bar-spaces-fill" class="h-full bg-white/20 w-0 transition-all duration-500"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <!-- ── ABOUT ── -->
-      <div class="about-section dash-top">
-        <h2 class="sec-label" style="margin-bottom:16px">WHAT IS WORDS BY AWAIS</h2>
-        <div class="about-body">
-          <p><strong>Words by Awais</strong> is a free, instant, browser-based word counter and text analysis tool — no sign-up, no server, no tracking. Everything runs locally in your browser.</p>
-          <p>Paste or type any text — an essay, email, tweet, article, script, or code comment — and get a full breakdown in real time. It counts words, characters, sentences, paragraphs, reading time, speaking time, and much more.</p>
-          <p>The built-in <strong>Hemingway Analyzer</strong> highlights hard-to-read sentences, passive voice, adverbs, and complex phrases so you can write cleaner, clearer prose — just like the Hemingway editor.</p>
-          <p>The <strong>Flesch-Kincaid grade level</strong> and <strong>reading ease score</strong> tell you how accessible your writing is. The <strong>keyword density</strong> panel shows your top words and how often they appear — useful for SEO and avoiding repetition.</p>
-        </div>
-        <div class="about-feature-grid">
-          <div class="about-feature">Word count</div>
-          <div class="about-feature">Char count</div>
-          <div class="about-feature">Read time</div>
-          <div class="about-feature">Speak time</div>
-          <div class="about-feature">Grade level</div>
-          <div class="about-feature">Reading ease</div>
-          <div class="about-feature">Hemingway mode</div>
-          <div class="about-feature">Passive voice</div>
-          <div class="about-feature">Adverb count</div>
-          <div class="about-feature">Complex phrases</div>
-          <div class="about-feature">Keyword density</div>
-          <div class="about-feature">Emoji analysis</div>
-          <div class="about-feature">Syllable count</div>
-          <div class="about-feature">Sentence avg</div>
-          <div class="about-feature">URL detection</div>
-          <div class="about-feature">Hashtag count</div>
-          <div class="about-feature">Dark / light mode</div>
-          <div class="about-feature">No sign-up needed</div>
-        </div>
-        <div class="about-body" style="margin-top:12px">
-          <p>Built by <strong>Ahmad Awais</strong> — open-source developer, Google Developer Expert, and recipient of the GitHub Stars gold award. <a href="https://awais.dev" style="color:var(--accent);text-decoration:none">awais.dev</a></p>
-        </div>
-      </div>
+            <!-- Top Words -->
+            <div class="glass-panel rounded-3xl p-6 flex flex-col gap-4">
+               <p class="text-xs font-bold tracking-widest text-zinc-500 uppercase">Top Keywords</p>
+               <div id="top-words-list" class="space-y-2">
+                 <!-- Populated by JS -->
+                 <div class="text-xs text-zinc-600 italic">Start typing...</div>
+               </div>
+            </div>
 
-    </div><!-- /main-wrap -->
+        </div>
+
+        <!-- Hidden Elements required for compatibility if I missed any refs -->
+        <div class="hidden">
+           <span id="pct-letters"></span>
+           <span id="pct-numbers"></span>
+           <span id="pct-spaces"></span>
+        </div>
+
+      </div>
+    </div>
   </main>
 
-  <!-- ══ TOAST ══ -->
-  <div id="toast" role="status" aria-live="polite" aria-atomic="true">
-    <div class="toast-inner">
-      <div class="toast-dot" aria-hidden="true"></div>
-      <span id="toast-msg">OK</span>
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 transition-all duration-300 pointer-events-none z-50">
+    <div class="glass-panel px-6 py-3 rounded-full flex items-center gap-3">
+      <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+      <span id="toast-msg" class="text-sm font-bold text-white tracking-wide">COPIED</span>
     </div>
   </div>
 
   <script>
-    // ── Theme ──
+    // ── Logic Ported & Adapted ──
     const html = document.documentElement;
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    function applyTheme(dark) {
-      html.classList.toggle('dark', dark);
-      html.classList.toggle('light', !dark);
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      const themeToggle = document.getElementById('theme-toggle');
-      if (themeToggle) themeToggle.setAttribute('aria-pressed', String(dark));
-      const themeColorMeta = document.getElementById('theme-color-meta');
-      if (themeColorMeta) themeColorMeta.setAttribute('content', dark ? '#000000' : '#F0EDE6');
-    }
-    function toggleTheme() { applyTheme(!html.classList.contains('dark')); }
-    const saved = localStorage.getItem('theme');
-    if (saved) applyTheme(saved === 'dark');
-    else applyTheme(mq.matches);
-    mq.addEventListener('change', e => { if (!localStorage.getItem('theme')) applyTheme(e.matches); });
 
     // ── Regexes ──
     const EMOJI_RE = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;
-    const URL_RE   = /https?:\/\/[^\s]+|www\.[^\s]+/gi;
-    const EMAIL_RE = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
-    const HASH_RE  = /#\w+/g;
-    const MENT_RE  = /@\w+/g;
-
-    // ── Syllable counter ──
-    function countSyllables(word) {
-      word = word.toLowerCase().replace(/[^a-z]/g, '');
-      if (!word) return 0;
-      if (word.length <= 3) return 1;
-      word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
-      word = word.replace(/^y/, '');
-      const m = word.match(/[aeiouy]{1,2}/g);
-      return m ? m.length : 1;
-    }
-
-    function totalSyllables(words) {
-      return words.reduce((s, w) => s + countSyllables(w), 0);
-    }
-
-    // ── Flesch-Kincaid ──
-    function fleschKincaidGrade(words, sentences, syllables) {
-      if (!words || !sentences) return null;
-      return 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
-    }
-
-    function fleschReadingEase(words, sentences, syllables) {
-      if (!words || !sentences) return null;
-      return 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-    }
-
-    function gradeLabel(grade) {
-      if (grade === null) return '—';
-      if (grade < 1)  return 'Kindergarten';
-      if (grade < 6)  return 'Elementary';
-      if (grade < 9)  return 'Middle School';
-      if (grade < 13) return 'High School';
-      if (grade < 17) return 'College';
-      return 'Graduate';
-    }
-
-    function easeLabel(ease) {
-      if (ease === null) return '—';
-      if (ease >= 90) return 'Very Easy';
-      if (ease >= 80) return 'Easy';
-      if (ease >= 70) return 'Fairly Easy';
-      if (ease >= 60) return 'Standard';
-      if (ease >= 50) return 'Fairly Difficult';
-      if (ease >= 30) return 'Difficult';
-      return 'Very Difficult';
-    }
-
-    // ── Adverb detection ──
     const NOT_ADVERBS = new Set(['only','early','family','likely','lonely','lovely','friendly','ugly','holy','jolly','silly','belly','bully','ally','rally','tally','jelly','smelly','daily','weekly','monthly','yearly','erly','erly','erly']);
-    function findAdverbs(words) {
-      return words.filter(w => {
-        const lw = w.toLowerCase().replace(/[^a-z]/g,'');
-        return lw.endsWith('ly') && lw.length > 4 && !NOT_ADVERBS.has(lw);
-      });
-    }
-
-    // ── Passive voice detection ──
     const PASSIVE_RE = /\b(am|is|are|was|were|be|been|being)\s+(\w+ly\s+)?(\w+ed|built|bought|brought|caught|dealt|felt|found|got|had|heard|held|kept|known|left|lost|made|meant|met|paid|put|read|said|seen|sent|shown|shut|sold|sent|set|spent|stood|taken|taught|told|thought|understood|won|written)\b/gi;
-    function countPassive(text) {
-      const m = text.match(PASSIVE_RE);
-      return m ? m.length : 0;
-    }
-
-    // ── Complex phrases ──
     const COMPLEX_PHRASES = [
       ['a number of','many'],['at the present time','now'],['due to the fact that','because'],
       ['in order to','to'],['in the event that','if'],['it is important to note','note'],
@@ -1065,6 +329,26 @@
       ['at all times','always'],['in many cases','often'],['in some cases','sometimes'],
       ['it is possible that','perhaps'],['the question as to whether','whether'],
     ];
+
+    // ── Helpers ──
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (!word) return 0;
+      if (word.length <= 3) return 1;
+      word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+      word = word.replace(/^y/, '');
+      const m = word.match(/[aeiouy]{1,2}/g);
+      return m ? m.length : 1;
+    }
+    function totalSyllables(words) { return words.reduce((s, w) => s + countSyllables(w), 0); }
+    function fleschKincaidGrade(words, sentences, syllables) {
+      if (!words || !sentences) return null;
+      return 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
+    }
+    function fleschReadingEase(words, sentences, syllables) {
+      if (!words || !sentences) return null;
+      return 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+    }
     function countComplexPhrases(text) {
       const lower = text.toLowerCase();
       return COMPLEX_PHRASES.reduce((n, [phrase]) => {
@@ -1073,28 +357,32 @@
         return n + count;
       }, 0);
     }
-
-    // ── Sentence difficulty (per-sentence FK approximation) ──
     function sentenceDifficulty(sentence) {
       const words = sentence.trim().split(/\s+/).filter(Boolean);
       if (!words.length) return 0;
       const syls = totalSyllables(words);
       const avgSyl = syls / words.length;
       const grade = 0.39 * words.length + 11.8 * avgSyl - 15.59;
-      if (grade >= 14 || words.length > 35) return 2; // very hard
-      if (grade >= 10 || words.length > 20) return 1; // hard
+      if (grade >= 14 || words.length > 35) return 2;
+      if (grade >= 10 || words.length > 20) return 1;
       return 0;
     }
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function escRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function fmtTime(words, wpm) {
+      const s = Math.round((words / wpm) * 60);
+      if (s < 60) return s + 's';
+      const m = Math.floor(s / 60), r = s % 60;
+      return r ? `${m}m ${r}s` : `${m}m`;
+    }
+    function pct(v, t) { return t ? Math.round((v / t) * 100) + '%' : '0%'; }
 
-    // ── Hemingway renderer ──
+    // ── Hemingway Logic ──
     function renderHemingway(text) {
       if (!text.trim()) return '';
-
-      // Split into sentences preserving delimiters
       const parts = text.split(/([.!?]+\s*|\n+)/);
       let result = '';
       let buffer = '';
-
       const flushBuffer = () => {
         if (!buffer.trim()) { result += escHtml(buffer); buffer = ''; return; }
         const diff = sentenceDifficulty(buffer);
@@ -1104,52 +392,30 @@
         else result += inner;
         buffer = '';
       };
-
       for (const part of parts) {
-        if (/^[.!?]+\s*$/.test(part) || /^\n+$/.test(part)) {
-          buffer += part;
-          flushBuffer();
-        } else {
-          buffer += part;
-        }
+        if (/^[.!?]+\s*$/.test(part) || /^\n+$/.test(part)) { buffer += part; flushBuffer(); }
+        else { buffer += part; }
       }
       if (buffer) flushBuffer();
       return result;
     }
-
     function highlightInline(text) {
-      // Escape HTML first
       let out = escHtml(text);
-
-      // Complex phrases (longest first to avoid partial matches)
       const sorted = [...COMPLEX_PHRASES].sort((a,b) => b[0].length - a[0].length);
       for (const [phrase, alt] of sorted) {
         const re = new RegExp(escRegex(phrase), 'gi');
         out = out.replace(re, m => `<span class="hw-complex" title="Consider: ${alt}">${m}</span>`);
       }
-
-      // Passive voice
-      out = out.replace(/\b(am|is|are|was|were|be|been|being)(\s+\w+ly\s+|\s+)(\w+ed|built|bought|brought|caught|dealt|felt|found|got|had|heard|held|kept|known|left|lost|made|meant|met|paid|put|read|said|seen|sent|shown|shut|sold|set|spent|stood|taken|taught|told|thought|understood|won|written)\b/gi,
-        m => `<span class="hw-passive" title="Passive voice">${m}</span>`);
-
-      // Adverbs
+      out = out.replace(PASSIVE_RE, m => `<span class="hw-passive" title="Passive voice">${m}</span>`);
       out = out.replace(/\b([a-zA-Z]+ly)\b/g, (m) => {
         const lw = m.toLowerCase();
         if (lw.length > 4 && !NOT_ADVERBS.has(lw)) return `<span class="hw-adverb" title="Adverb">${m}</span>`;
         return m;
       });
-
       return out;
     }
 
-    function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-    function escRegex(s) {
-      return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
-    // ── Hemingway toggle ──
+    // ── Interactions ──
     let hemingwayActive = false;
     function toggleHemingway() {
       hemingwayActive = !hemingwayActive;
@@ -1159,58 +425,32 @@
       const btn = document.getElementById('btn-hemingway');
       if (hemingwayActive) {
         view.innerHTML = renderHemingway(ta.value);
-        view.classList.add('active');
-        ta.style.display = 'none';
-        legend.style.display = 'block';
-        btn.classList.add('btn-active');
+        view.classList.remove('hidden');
+        ta.classList.add('opacity-0'); 
+        legend.classList.remove('hidden');
+        btn.classList.add('bg-white/10', 'text-white', 'border-white/30');
       } else {
-        view.classList.remove('active');
-        ta.style.display = '';
-        legend.style.display = 'none';
-        btn.classList.remove('btn-active');
+        view.classList.add('hidden');
+        ta.classList.remove('opacity-0');
+        legend.classList.add('hidden');
+        btn.classList.remove('bg-white/10', 'text-white', 'border-white/30');
       }
     }
-
-    // ── Block bar renderer ──
-    const BAR_W = 20;
-    function blockBar(val, total) {
-      if (!total) return '░'.repeat(BAR_W);
-      const f = Math.round(Math.min(1, val / total) * BAR_W);
-      return '█'.repeat(f) + '░'.repeat(BAR_W - f);
-    }
-
-    // ── Time formatter ──
-    function fmtTime(words, wpm) {
-      const s = Math.round((words / wpm) * 60);
-      if (s < 60) return s + 's';
-      const m = Math.floor(s / 60), r = s % 60;
-      return r ? `${m}m ${r}s` : `${m}m`;
-    }
-
-    // ── Animate stat ──
     function setStat(id, val) {
       const el = document.getElementById(id);
       if (!el) return;
       const v = String(val);
       if (el.textContent === v) return;
       el.textContent = v;
-      el.classList.remove('pop');
-      requestAnimationFrame(() => {
-        el.classList.add('pop');
-        setTimeout(() => el.classList.remove('pop'), 250);
-      });
+      el.classList.add('scale-110', 'text-accent');
+      setTimeout(() => el.classList.remove('scale-110', 'text-accent'), 150);
     }
-
-    function pct(v, t) { return t ? Math.round((v / t) * 100) + '%' : '0%'; }
-
-    // ── Toast ──
     function toast(msg) {
       const el = document.getElementById('toast');
       document.getElementById('toast-msg').textContent = msg;
-      el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 2200);
+      el.classList.remove('translate-y-8', 'opacity-0');
+      setTimeout(() => el.classList.add('translate-y-8', 'opacity-0'), 2000);
     }
-
     function clearText() {
       const input = document.getElementById('textInput');
       if (input.value && !window.confirm('Clear all text?')) return;
@@ -1221,74 +461,33 @@
     }
     function copyText() {
       const t = document.getElementById('textInput').value;
-      if (!t) { toast('NOTHING TO COPY'); return; }
-      navigator.clipboard.writeText(t).then(() => toast('COPIED TO CLIPBOARD'));
+      if (!t) { toast('EMPTY'); return; }
+      navigator.clipboard.writeText(t).then(() => toast('COPIED'));
     }
 
-    // ── Main analysis ──
+    // ── Main Analysis ──
     function analyzeText() {
       const text = document.getElementById('textInput').value;
       const total = text.length;
-
       const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean) : [];
       const wc = words.length;
       const sentenceList = text.split(/[.!?]+/).filter(s => s.trim());
       const sentences = sentenceList.length;
       const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length;
-      const lines = text.split('\n').length;
-
-      const emojiMatches = [...text.matchAll(EMOJI_RE)];
-      const emojiCount = emojiMatches.length;
-
-      const letters     = (text.match(/[a-zA-Z\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]/g) || []).length;
-      const uppercase   = (text.match(/[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g) || []).length;
-      const lowercase   = (text.match(/[a-z\u00DF-\u00F6\u00F8-\u00FF]/g) || []).length;
-      const numbers     = (text.match(/[0-9]/g) || []).length;
-      const punctuation = (text.match(/[.,!?;:'"()\[\]{}\-–—…\/\\|`~]/g) || []).length;
-      const spaces      = (text.match(/\s/g) || []).length;
-
-      let special = 0;
-      for (const ch of text) {
-        if (!/[a-zA-Z0-9\s.,!?;:'"()\[\]{}\-–—…\/\\|`~\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]/.test(ch) && !EMOJI_RE.test(ch)) special++;
-      }
-      EMOJI_RE.lastIndex = 0;
-
-      const charsNoSpace = total - spaces;
-      const nonAscii    = (text.match(/[^\x00-\x7F]/g) || []).length;
-      const urls        = (text.match(URL_RE)   || []).length;
-      const emails      = (text.match(EMAIL_RE) || []).length;
-      const hashtags    = (text.match(HASH_RE)  || []).length;
-      const mentions    = (text.match(MENT_RE)  || []).length;
-      const excl        = (text.match(/!/g) || []).length;
-      const ques        = (text.match(/\?/g) || []).length;
-
-      // Syllables + readability
+      
+      const letters = (text.match(/[a-zA-Z]/g) || []).length;
+      const numbers = (text.match(/[0-9]/g) || []).length;
+      const spaces = (text.match(/\s/g) || []).length;
+      
       const sylCount = totalSyllables(words);
       const fkGrade  = fleschKincaidGrade(wc, sentences, sylCount);
       const fkEase   = fleschReadingEase(wc, sentences, sylCount);
-
-      // Hemingway stats
-      const adverbs  = findAdverbs(words);
-      const passive  = countPassive(text);
       const complex  = countComplexPhrases(text);
-      const hardSentences = sentenceList.filter(s => sentenceDifficulty(s) > 0).length;
-
-      // Avg sentence length
-      const avgSent = sentences ? Math.round(wc / sentences) : 0;
-
-      // Word frequency
-      const freq = {};
-      words.forEach(w => { const c = w.toLowerCase().replace(/[^a-z0-9']/g,''); if(c) freq[c]=(freq[c]||0)+1; });
-      const unique   = Object.keys(freq).length;
-      const repeated = Object.values(freq).filter(v=>v>1).length;
-      const density  = wc ? Math.round((unique/wc)*100)+'%' : '0%';
-      const avgLen   = wc ? Math.round(words.reduce((s,w)=>s+w.replace(/[^a-zA-Z]/g,'').length,0)/wc) : 0;
-      const longest  = words.reduce((a,b)=>b.length>a.length?b:a,'');
-
+      const unique   = new Set(words.map(w => w.toLowerCase())).size;
       const readTime  = fmtTime(wc, 238);
       const speakTime = fmtTime(wc, 130);
 
-      // Set stats
+      // DOM Updates
       setStat('stat-words', wc.toLocaleString());
       setStat('stat-chars', total.toLocaleString());
       setStat('stat-sentences', sentences.toLocaleString());
@@ -1296,130 +495,60 @@
       setStat('stat-read-time', readTime);
       setStat('stat-speak-time', speakTime);
       setStat('stat-unique-words', unique.toLocaleString());
-      setStat('stat-syllables', sylCount.toLocaleString());
-      setStat('stat-letters', letters.toLocaleString());
-      setStat('stat-numbers', numbers.toLocaleString());
-      setStat('stat-punctuation', punctuation.toLocaleString());
-      setStat('stat-spaces', spaces.toLocaleString());
-      setStat('stat-emojis', emojiCount.toLocaleString());
-      setStat('stat-special', special.toLocaleString());
-      setStat('stat-uppercase', uppercase.toLocaleString());
-      setStat('stat-lowercase', lowercase.toLocaleString());
-      setStat('stat-avg-word', avgLen);
-      setStat('stat-longest-word', longest || '—');
-      setStat('stat-urls', urls.toLocaleString());
-      setStat('stat-emails', emails.toLocaleString());
-      setStat('stat-adverbs', adverbs.length.toLocaleString());
-      setStat('stat-passive', passive.toLocaleString());
-      setStat('stat-repeated', repeated.toLocaleString());
-      setStat('stat-density', density);
       setStat('stat-complex', complex.toLocaleString());
-      setStat('stat-avg-sent', avgSent);
-      setStat('stat-chars-no-space', charsNoSpace.toLocaleString());
-      setStat('stat-lines', lines.toLocaleString());
-      setStat('stat-nonascii', nonAscii.toLocaleString());
-      setStat('stat-hashtags', hashtags.toLocaleString());
-      setStat('stat-mentions', mentions.toLocaleString());
-      setStat('stat-exclamations', excl.toLocaleString());
-      setStat('stat-questions', ques.toLocaleString());
-      setStat('stat-hw-hard', hardSentences.toLocaleString());
 
-      // Grade + ease
-      const gradeEl = document.getElementById('stat-grade');
-      const gradeLabelEl = document.getElementById('stat-grade-label');
-      const easeEl = document.getElementById('stat-ease');
-      const easeLabelEl = document.getElementById('stat-ease-label');
       if (fkGrade !== null) {
-        gradeEl.textContent = Math.max(0, fkGrade).toFixed(1);
-        gradeLabelEl.textContent = gradeLabel(fkGrade);
-        easeEl.textContent = Math.min(100, Math.max(0, fkEase)).toFixed(0);
-        easeLabelEl.textContent = easeLabel(fkEase);
+        document.getElementById('stat-grade').textContent = Math.max(0, fkGrade).toFixed(1);
+        document.getElementById('stat-ease').textContent = Math.min(100, Math.max(0, fkEase)).toFixed(0);
       } else {
-        gradeEl.textContent = '—';
-        gradeLabelEl.textContent = 'Flesch-Kincaid';
-        easeEl.textContent = '—';
-        easeLabelEl.textContent = 'Flesch score';
+        document.getElementById('stat-grade').textContent = '—';
+        document.getElementById('stat-ease').textContent = '—';
       }
 
-      // Block bars
-      document.getElementById('bar-letters').textContent     = blockBar(letters, total);
-      document.getElementById('bar-numbers').textContent     = blockBar(numbers, total);
-      document.getElementById('bar-punctuation').textContent = blockBar(punctuation, total);
-      document.getElementById('bar-spaces').textContent      = blockBar(spaces, total);
-      document.getElementById('bar-emojis').textContent      = blockBar(emojiCount, total);
-      document.getElementById('bar-special').textContent     = blockBar(special, total);
+      const updateBar = (id, count, total) => {
+        const el = document.getElementById(id);
+        if(el) el.style.width = total ? (count/total)*100 + '%' : '0%';
+      };
+      updateBar('bar-letters-fill', letters, total);
+      updateBar('bar-numbers-fill', numbers, total);
+      updateBar('bar-spaces-fill', spaces, total);
 
-      // Percentages
-      document.getElementById('pct-letters').textContent     = pct(letters, total);
-      document.getElementById('pct-numbers').textContent     = pct(numbers, total);
-      document.getElementById('pct-punctuation').textContent = pct(punctuation, total);
-      document.getElementById('pct-spaces').textContent      = pct(spaces, total);
-      document.getElementById('pct-emojis').textContent      = pct(emojiCount, total);
-      document.getElementById('pct-special').textContent     = pct(special, total);
-
-      // Inline
-      document.getElementById('char-count-inline').textContent  = total.toLocaleString();
-      document.getElementById('word-count-inline').textContent  = wc.toLocaleString();
+      document.getElementById('char-count-inline').textContent = total.toLocaleString();
+      document.getElementById('word-count-inline').textContent = wc.toLocaleString();
       document.getElementById('reading-time-inline').textContent = `~${readTime} READ`;
-      document.getElementById('header-words').textContent        = wc.toLocaleString();
 
-      // Emoji showcase
-      const emojiSec = document.getElementById('emoji-section');
-      if (emojiCount > 0) {
-        emojiSec.style.display = 'block';
-        const ef = {};
-        emojiMatches.forEach(m => ef[m[0]] = (ef[m[0]]||0)+1);
-        document.getElementById('emoji-list').innerHTML = Object.entries(ef)
-          .sort((a,b)=>b[1]-a[1])
-          .map(([e,c]) => `<div class="emoji-chip">${e}${c>1?`<span class="emoji-chip-count">×${c}</span>`:''}</div>`)
-          .join('');
-      } else { emojiSec.style.display = 'none'; }
+      if (hemingwayActive) document.getElementById('hemingway-view').innerHTML = renderHemingway(text);
+      
+      const progress = Math.min(100, (wc / 1000) * 100);
+      document.getElementById('progress-bar').style.width = progress + '%';
 
-      // Top words + keyword density
-      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','it','this','that','was','are','be','as','by','from','have','has','had','not','we','you','i','he','she','they','do','did','will','would','could','should','may','might','can','its','our','your','their','my','his','her','been','were','so','if','about','up','out','into','than','then','when','there','what','which','who','how','all','more','also','just','no','get','got','go','one','two','three','any','some','such','each','other','these','those','them','us','me','him','her']);
-      const topWords = Object.entries(freq)
-        .filter(([w]) => !stopWords.has(w) && w.length > 2)
-        .sort((a,b) => b[1]-a[1])
-        .slice(0, 10);
-
-      const twSec = document.getElementById('top-words-section');
-      if (topWords.length > 0) {
-        twSec.style.display = 'block';
-        const max = topWords[0][1];
-        document.getElementById('top-words-list').innerHTML = topWords.map(([w,c]) => {
-          const f = Math.round((c/max)*16);
-          const bar = '█'.repeat(f) + '░'.repeat(16-f);
-          const d = wc ? ((c/wc)*100).toFixed(1)+'%' : '0%';
-          return `<div class="word-row">
-            <span class="word-key">${w}</span>
-            <span class="word-bar">${bar}</span>
-            <span class="word-count">${c}</span>
-            <span class="word-density">${d}</span>
-          </div>`;
-        }).join('');
-      } else { twSec.style.display = 'none'; }
-
-      // Update hemingway view if active
-      if (hemingwayActive) {
-        document.getElementById('hemingway-view').innerHTML = renderHemingway(text);
+      // Top Words
+      const freq = {};
+      const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','it','this','that','was','are','be','as','by','from','have','has','had','not','we','you','i','he','she','they','do','did','will','would','could','should','may','might','can','its','our','your','their','my','his','her']);
+      words.forEach(w => { 
+        const c = w.toLowerCase().replace(/[^a-z0-9']/g,''); 
+        if(c && !stopWords.has(c) && c.length > 2) freq[c]=(freq[c]||0)+1; 
+      });
+      const topWords = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0, 5);
+      
+      const topWordsContainer = document.getElementById('top-words-list');
+      if (wc === 0) {
+        topWordsContainer.innerHTML = '<div class="text-xs text-zinc-600 italic">Start typing...</div>';
+      } else if (topWords.length === 0) {
+        topWordsContainer.innerHTML = '<div class="text-xs text-zinc-600 italic">No meaningful words yet</div>';
+      } else {
+        topWordsContainer.innerHTML = topWords.map(([w, c]) => `
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-zinc-400 truncate w-24">${w}</span>
+            <div class="flex-1 mx-2 h-1 bg-white/5 rounded-full"><div class="h-full bg-zinc-600 rounded-full" style="width:${(c/topWords[0][1])*100}%"></div></div>
+            <span class="text-white font-mono min-w-[1.5rem] text-right">${c}</span>
+          </div>
+        `).join('');
       }
-
-      // Auto-resize textarea
-      const ta = document.getElementById('textInput');
-      ta.style.height = 'auto';
-      ta.style.height = Math.min(380, Math.max(140, ta.scrollHeight)) + 'px';
     }
 
     analyzeText();
-    if (!window.matchMedia('(pointer: coarse)').matches) {
-      document.getElementById('textInput').focus();
-    }
-    window.addEventListener('beforeunload', (event) => {
-      if (document.getElementById('textInput').value.trim()) {
-        event.preventDefault();
-        event.returnValue = '';
-      }
-    });
+    window.onload = () => document.body.classList.add('opacity-100');
   </script>
 </body>
 </html>
